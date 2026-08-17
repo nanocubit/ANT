@@ -231,8 +231,3 @@ impl DagState {
         Ok(())
     }
 }
-            })
-            .cloned()
-            .collect()
-    }
-}
