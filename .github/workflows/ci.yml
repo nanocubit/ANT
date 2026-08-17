@@ -12,39 +12,39 @@ env:
   CARGO_LOCKED: "1"
 
 jobs:
-  quick-check:
-    name: Quick Check (cargo check)
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+quick-check:
+  name: Quick Check (cargo check)
+  runs-on: ubuntu-latest
+  timeout-minutes: 20
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v4
 
-    - name: Install Rust
-      uses: actions-rust-lang/setup-rust-toolchain@v1
-      with:
-        toolchain: ${{ env.RUST_VERSION }}
-        cache: true
+  - name: Install Rust
+    uses: dtolnay/rust-toolchain@stable
+    with:
+      toolchain: ${{ env.RUST_VERSION }}
+      cache: true
 
-    - name: Cache cargo dependencies
-      uses: Swatinem/rust-cache@v2
-      with:
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-        shared-key: ${{ runner.os }}-cargo-shared
+  - name: Cache cargo dependencies
+    uses: Swatinem/rust-cache@v2
+    with:
+      key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      shared-key: ${{ runner.os }}-cargo-shared
 
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update -qq
-        sudo apt-get install -y -qq pkg-config libssl-dev
+  - name: Install system dependencies
+    run: |
+      sudo apt-get update -qq
+      sudo apt-get install -y -qq pkg-config libssl-dev
 
-    - name: Quick syntax check (default features)
-      run: cargo check --features "metrics,structured-logs"
+  - name: Quick syntax check (default features)
+    run: cargo check --features "metrics,structured-logs"
 
-    - name: Quick syntax check (minimal features)
-      run: cargo check --no-default-features --features minimal
+  - name: Quick syntax check (minimal features)
+    run: cargo check --no-default-features --features minimal
 
-    - name: Quick syntax check (full features)
-      run: cargo check --features "full"
+  - name: Quick syntax check (full features)
+    run: cargo check --features "full"  
 
   fmt-clippy:
     name: Format & Clippy
