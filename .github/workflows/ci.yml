@@ -38,13 +38,13 @@ jobs:
         sudo apt-get install -y -qq pkg-config libssl-dev
 
     - name: Quick syntax check (default features)
-      run: cargo check --locked --features "metrics,structured-logs"
+      run: cargo check --features "metrics,structured-logs"
 
     - name: Quick syntax check (minimal features)
-      run: cargo check --locked --no-default-features --features minimal
+      run: cargo check --no-default-features --features minimal
 
     - name: Quick syntax check (full features)
-      run: cargo check --locked --features "full"
+      run: cargo check --features "full"
 
   fmt-clippy:
     name: Format & Clippy
