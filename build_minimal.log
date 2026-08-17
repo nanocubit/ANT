@@ -1,0 +1,1208 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.44
+   Compiling libc v0.2.182
+   Compiling cfg-if v1.0.4
+   Compiling serde_core v1.0.228
+   Compiling libm v0.2.16
+   Compiling autocfg v1.5.0
+   Compiling num-traits v0.2.19
+   Compiling syn v2.0.117
+   Compiling serde v1.0.228
+   Compiling core-foundation-sys v0.8.7
+   Compiling bitflags v2.11.0
+   Compiling bytes v1.11.1
+   Compiling once_cell v1.21.3
+   Compiling icu_normalizer_data v2.1.1
+   Compiling icu_properties_data v2.1.2
+   Compiling stable_deref_trait v1.2.1
+   Compiling errno v0.3.14
+   Compiling num-integer v0.1.46
+   Compiling smallvec v1.15.1
+   Compiling httparse v1.10.1
+   Compiling pin-project-lite v0.2.16
+   Compiling zerocopy v0.8.39
+   Compiling synstructure v0.13.2
+   Compiling futures-core v0.3.32
+   Compiling hashbrown v0.16.1
+   Compiling find-msvc-tools v0.1.9
+   Compiling itoa v1.0.17
+   Compiling shlex v1.3.0
+   Compiling cc v1.2.56
+   Compiling num-bigint v0.4.6
+   Compiling num-iter v0.1.45
+   Compiling num-complex v0.4.6
+   Compiling zerofrom-derive v0.1.6
+   Compiling yoke-derive v0.8.1
+   Compiling zerovec-derive v0.11.2
+   Compiling displaydoc v0.2.5
+   Compiling serde_derive v1.0.228
+   Compiling zerofrom v0.1.6
+   Compiling yoke v0.8.1
+   Compiling zerocopy-derive v0.8.39
+   Compiling zerovec v0.11.5
+   Compiling tinystr v0.8.2
+   Compiling num-rational v0.4.2
+   Compiling ring v0.17.14
+   Compiling mio v1.1.1
+   Compiling socket2 v0.6.2
+   Compiling memchr v2.8.0
+   Compiling parking_lot_core v0.9.12
+   Compiling getrandom v0.3.4
+   Compiling futures-sink v0.3.32
+   Compiling version_check v0.9.5
+   Compiling litemap v0.8.1
+   Compiling writeable v0.6.2
+   Compiling ahash v0.8.12
+   Compiling icu_locale_core v2.1.1
+   Compiling tokio v1.49.0
+   Compiling num v0.4.3
+   Compiling potential_utf v0.1.4
+   Compiling zerotrie v0.2.3
+   Compiling http v1.4.0
+   Compiling half v2.7.1
+   Compiling signal-hook-registry v1.4.8
+   Compiling zmij v1.0.21
+   Compiling zeroize v1.8.2
+   Compiling scopeguard v1.2.0
+   Compiling rustversion v1.0.22
+   Compiling lock_api v0.4.14
+   Compiling rustls-pki-types v1.14.0
+   Compiling arrow-buffer v56.2.0
+   Compiling http-body v1.0.1
+   Compiling icu_provider v2.1.1
+   Compiling icu_collections v2.1.1
+   Compiling getrandom v0.2.17
+   Compiling arrow-schema v56.2.0
+   Compiling iana-time-zone v0.1.65
+   Compiling slab v0.4.12
+   Compiling futures-task v0.3.32
+   Compiling equivalent v1.0.2
+   Compiling untrusted v0.9.0
+   Compiling futures-io v0.3.32
+   Compiling percent-encoding v2.3.2
+   Compiling futures-util v0.3.32
+   Compiling arrow-data v56.2.0
+   Compiling chrono v0.4.43
+   Compiling parking_lot v0.12.5
+   Compiling tower-service v0.3.3
+   Compiling try-lock v0.2.5
+   Compiling serde_json v1.0.149
+   Compiling rustls v0.23.36
+   Compiling heck v0.5.0
+   Compiling crc32fast v1.5.0
+   Compiling want v0.3.1
+   Compiling arrow-array v56.2.0
+   Compiling icu_properties v2.1.2
+   Compiling icu_normalizer v2.1.1
+   Compiling rustls-webpki v0.103.9
+   Compiling tracing-core v0.1.36
+   Compiling futures-channel v0.3.32
+   Compiling pin-utils v0.1.0
+   Compiling subtle v2.6.1
+   Compiling rustix v1.1.3
+   Compiling getrandom v0.4.1
+   Compiling simd-adler32 v0.3.8
+   Compiling lexical-util v1.0.7
+   Compiling atomic-waker v1.1.2
+   Compiling hyper v1.8.1
+   Compiling tracing v0.1.44
+   Compiling idna_adapter v1.2.1
+   Compiling form_urlencoded v1.2.2
+   Compiling tokio-macros v2.6.0
+   Compiling sync_wrapper v1.0.2
+   Compiling ryu v1.0.23
+   Compiling base64 v0.22.1
+   Compiling adler2 v2.0.1
+   Compiling log v0.4.29
+   Compiling crossbeam-utils v0.8.21
+   Compiling tower-layer v0.3.3
+   Compiling ipnet v2.11.0
+   Compiling utf8_iter v1.0.4
+   Compiling idna v1.1.0
+   Compiling tokio-rustls v0.26.4
+   Compiling hyper-util v0.1.20
+   Compiling tower v0.5.3
+   Compiling miniz_oxide v0.8.9
+   Compiling strum_macros v0.26.4
+   Compiling webpki-roots v1.0.6
+   Compiling zlib-rs v0.6.2
+   Compiling bumpalo v3.20.2
+   Compiling either v1.15.0
+   Compiling iri-string v0.7.10
+   Compiling fnv v1.0.7
+   Compiling http v0.2.12
+   Compiling tower-http v0.6.8
+   Compiling flate2 v1.1.9
+   Compiling serde_urlencoded v0.7.1
+   Compiling indexmap v2.13.0
+   Compiling zopfli v0.8.3
+   Compiling strum v0.26.3
+   Compiling hyper-rustls v0.27.7
+   Compiling xattr v1.6.1
+   Compiling url v2.5.8
+   Compiling lexical-write-integer v1.0.6
+   Compiling lexical-parse-integer v1.0.6
+   Compiling aho-corasick v1.1.4
+   Compiling arrow-select v56.2.0
+   Compiling http-body-util v0.1.3
+   Compiling filetime v0.2.27
+   Compiling security-framework-sys v2.17.0
+   Compiling core-foundation v0.10.1
+   Compiling signal-hook v0.3.18
+   Compiling regex-syntax v0.8.9
+   Compiling foldhash v0.1.5
+   Compiling fastrand v2.3.0
+   Compiling allocator-api2 v0.2.21
+   Compiling native-tls v0.2.18
+   Compiling hashbrown v0.15.5
+   Compiling regex-automata v0.4.14
+   Compiling tokio-util v0.7.18
+   Compiling tempfile v3.25.0
+   Compiling security-framework v3.7.0
+   Compiling tar v0.4.44
+   Compiling reqwest v0.12.28
+   Compiling lexical-parse-float v1.0.6
+   Compiling lexical-write-float v1.0.6
+   Compiling crossbeam-epoch v0.9.18
+   Compiling zip v6.0.0
+   Compiling unicode-width v0.2.2
+   Compiling system-configuration-sys v0.5.0
+   Compiling vcpkg v0.2.15
+   Compiling rayon-core v1.13.0
+   Compiling pkg-config v0.3.32
+   Compiling libduckdb-sys v1.4.4
+   Compiling comfy-table v7.1.2
+   Compiling h2 v0.3.27
+   Compiling crossbeam-deque v0.8.6
+   Compiling lexical-core v1.0.6
+   Compiling regex v1.12.3
+   Compiling mio v0.8.11
+   Compiling http-body v0.4.6
+   Compiling atoi v2.0.0
+   Compiling socket2 v0.5.10
+   Compiling paste v1.0.15
+   Compiling rust_decimal v1.40.0
+   Compiling httpdate v1.0.3
+   Compiling hyper v0.14.32
+   Compiling arrow-cast v56.2.0
+   Compiling signal-hook-mio v0.2.5
+   Compiling arrow-string v56.2.0
+   Compiling tokio-native-tls v0.3.1
+   Compiling arrow-ord v56.2.0
+   Compiling itertools v0.13.0
+   Compiling arrow-arith v56.2.0
+   Compiling arrow-row v56.2.0
+   Compiling strum_macros v0.27.2
+   Compiling castaway v0.2.4
+   Compiling core-foundation v0.9.4
+   Compiling unicode-segmentation v1.12.0
+   Compiling option-ext v0.2.0
+   Compiling bitflags v1.3.2
+   Compiling static_assertions v1.1.0
+   Compiling anyhow v1.0.102
+   Compiling unicode-width v0.1.14
+   Compiling arrayvec v0.7.6
+   Compiling base64 v0.21.7
+   Compiling rustls-pemfile v1.0.4
+   Compiling unicode-truncate v1.1.0
+   Compiling compact_str v0.7.1
+   Compiling system-configuration v0.5.1
+   Compiling dirs-sys v0.4.1
+   Compiling strum v0.27.2
+   Compiling arrow v56.2.0
+   Compiling rayon v1.11.0
+   Compiling hyper-tls v0.5.0
+   Compiling crossterm v0.27.0
+   Compiling hashlink v0.10.0
+   Compiling lru v0.12.5
+   Compiling itertools v0.12.1
+   Compiling stability v0.2.1
+   Compiling encoding_rs v0.8.35
+   Compiling mime v0.3.17
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling fallible-iterator v0.3.0
+   Compiling cassowary v0.3.0
+   Compiling cast v0.3.0
+   Compiling sync_wrapper v0.1.2
+   Compiling reqwest v0.11.27
+   Compiling duckdb v1.4.4
+   Compiling ratatui v0.26.3
+   Compiling sysinfo v0.30.13
+   Compiling dirs v5.0.1
+   Compiling uuid v1.21.0
+   Compiling dotenv v0.15.0
+   Compiling dunce v1.0.5
+   Compiling ant v0.9.0 (/Users/Vladimir/code/ant)
+error[E0432]: unresolved import `crate::ui::theme`
+ --> src/ui/dashboard.rs:3:16
+  |
+3 | use crate::ui::theme::{Theme, ThemeManager, ThemeType};
+  |                ^^^^^ could not find `theme` in `ui`
+
+error[E0432]: unresolved import `fastembed`
+ --> src/core/memory.rs:3:5
+  |
+3 | use fastembed::{TextEmbedding, InitOptions, EmbeddingModel};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `fastembed`
+  |
+  = help: if you wanted to use a crate named `fastembed`, use `cargo add fastembed` to add it to your `Cargo.toml`
+
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `headless_chrome`
+ --> src/tools/browser.rs:2:5
+  |
+2 | use headless_chrome::{Browser, protocol::cdp::Page, types::PrintToPdfOptions};
+  |     ^^^^^^^^^^^^^^^ use of unresolved module or unlinked crate `headless_chrome`
+  |
+  = help: if you wanted to use a crate named `headless_chrome`, use `cargo add headless_chrome` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `headless_chrome`
+ --> src/tools/browser.rs:2:5
+  |
+2 | use headless_chrome::{Browser, protocol::cdp::Page, types::PrintToPdfOptions};
+  |     ^^^^^^^^^^^^^^^ use of unresolved module or unlinked crate `headless_chrome`
+  |
+  = help: if you wanted to use a crate named `headless_chrome`, use `cargo add headless_chrome` to add it to your `Cargo.toml`
+
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `regex`
+   --> src/tools/browser.rs:236:14
+    |
+236 |     let re = regex::Regex::new(pattern).unwrap();
+    |              ^^^^^ use of unresolved module or unlinked crate `regex`
+    |
+    = help: if you wanted to use a crate named `regex`, use `cargo add regex` to add it to your `Cargo.toml`
+
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `futures_util`
+   --> src/tools/agents.rs:398:70
+    |
+398 |             while let Some(Ok(bytes)) = stream.as_mut().and_then(|s| futures_util::StreamExt::next(s).await) {
+    |                                                                      ^^^^^^^^^^^^ use of unresolved module or unlinked crate `futures_util`
+    |
+    = help: if you wanted to use a crate named `futures_util`, use `cargo add futures_util` to add it to your `Cargo.toml`
+
+error[E0425]: cannot find type `Value` in crate `duckdb`
+   --> src/core/memory.rs:379:41
+    |
+379 |         let mut params_vec: Vec<duckdb::Value> = Vec::new();
+    |                                         ^^^^^ not found in `duckdb`
+    |
+help: consider importing one of these items
+    |
+  1 + use duckdb::types::Value;
+    |
+  1 + use duckdb::vtab::Value;
+    |
+  1 + use serde_json::Value;
+    |
+help: if you import `Value`, refer to it directly
+    |
+379 -         let mut params_vec: Vec<duckdb::Value> = Vec::new();
+379 +         let mut params_vec: Vec<Value> = Vec::new();
+    |
+
+error[E0433]: failed to resolve: could not find `Value` in `duckdb`
+   --> src/core/memory.rs:383:37
+    |
+383 |             params_vec.push(duckdb::Value::from(session_id.clone()));
+    |                                     ^^^^^ could not find `Value` in `duckdb`
+    |
+help: consider importing one of these items
+    |
+  1 + use duckdb::types::Value;
+    |
+  1 + use duckdb::vtab::Value;
+    |
+  1 + use serde_json::Value;
+    |
+help: if you import `Value`, refer to it directly
+    |
+383 -             params_vec.push(duckdb::Value::from(session_id.clone()));
+383 +             params_vec.push(Value::from(session_id.clone()));
+    |
+
+error[E0433]: failed to resolve: could not find `Value` in `duckdb`
+   --> src/core/memory.rs:388:37
+    |
+388 |             params_vec.push(duckdb::Value::from(parent_id.clone()));
+    |                                     ^^^^^ could not find `Value` in `duckdb`
+    |
+help: consider importing one of these items
+    |
+  1 + use duckdb::types::Value;
+    |
+  1 + use duckdb::vtab::Value;
+    |
+  1 + use serde_json::Value;
+    |
+help: if you import `Value`, refer to it directly
+    |
+388 -             params_vec.push(duckdb::Value::from(parent_id.clone()));
+388 +             params_vec.push(Value::from(parent_id.clone()));
+    |
+
+error[E0433]: failed to resolve: could not find `Value` in `duckdb`
+   --> src/core/memory.rs:394:37
+    |
+394 |             params_vec.push(duckdb::Value::from(format!("%{}%", tags_json)));
+    |                                     ^^^^^ could not find `Value` in `duckdb`
+    |
+help: consider importing one of these items
+    |
+  1 + use duckdb::types::Value;
+    |
+  1 + use duckdb::vtab::Value;
+    |
+  1 + use serde_json::Value;
+    |
+help: if you import `Value`, refer to it directly
+    |
+394 -             params_vec.push(duckdb::Value::from(format!("%{}%", tags_json)));
+394 +             params_vec.push(Value::from(format!("%{}%", tags_json)));
+    |
+
+error[E0433]: failed to resolve: could not find `Value` in `duckdb`
+   --> src/core/memory.rs:399:37
+    |
+399 |             params_vec.push(duckdb::Value::from(tool.clone()));
+    |                                     ^^^^^ could not find `Value` in `duckdb`
+    |
+help: consider importing one of these items
+    |
+  1 + use duckdb::types::Value;
+    |
+  1 + use duckdb::vtab::Value;
+    |
+  1 + use serde_json::Value;
+    |
+help: if you import `Value`, refer to it directly
+    |
+399 -             params_vec.push(duckdb::Value::from(tool.clone()));
+399 +             params_vec.push(Value::from(tool.clone()));
+    |
+
+error[E0433]: failed to resolve: could not find `Value` in `duckdb`
+   --> src/core/memory.rs:404:37
+    |
+404 |             params_vec.push(duckdb::Value::from(from_date.to_rfc3339()));
+    |                                     ^^^^^ could not find `Value` in `duckdb`
+    |
+help: consider importing one of these items
+    |
+  1 + use duckdb::types::Value;
+    |
+  1 + use duckdb::vtab::Value;
+    |
+  1 + use serde_json::Value;
+    |
+help: if you import `Value`, refer to it directly
+    |
+404 -             params_vec.push(duckdb::Value::from(from_date.to_rfc3339()));
+404 +             params_vec.push(Value::from(from_date.to_rfc3339()));
+    |
+
+error[E0433]: failed to resolve: could not find `Value` in `duckdb`
+   --> src/core/memory.rs:409:37
+    |
+409 |             params_vec.push(duckdb::Value::from(to_date.to_rfc3339()));
+    |                                     ^^^^^ could not find `Value` in `duckdb`
+    |
+help: consider importing one of these items
+    |
+  1 + use duckdb::types::Value;
+    |
+  1 + use duckdb::vtab::Value;
+    |
+  1 + use serde_json::Value;
+    |
+help: if you import `Value`, refer to it directly
+    |
+409 -             params_vec.push(duckdb::Value::from(to_date.to_rfc3339()));
+409 +             params_vec.push(Value::from(to_date.to_rfc3339()));
+    |
+
+warning: unused import: `SystemEvent`
+ --> src/sys/audit_logger.rs:1:28
+  |
+1 | use crate::bus::{EventBus, SystemEvent};
+  |                            ^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Capability`
+ --> src/sys/orchestrator.rs:2:47
+  |
+2 | use crate::tools::sandbox::{WorkspaceSandbox, Capability};
+  |                                               ^^^^^^^^^^
+
+warning: unused import: `TaskStatus`
+ --> src/core/timetravel.rs:5:34
+  |
+5 | use crate::core::dag::{DagState, TaskStatus, ExecutionPlan};
+  |                                  ^^^^^^^^^^
+
+warning: unused imports: `Duration as TokioDuration` and `sleep`
+   --> src/tools/browser.rs:258:19
+    |
+258 | use tokio::time::{sleep, Duration as TokioDuration};
+    |                   ^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `AsyncWriteExt`
+ --> src/tools/agents.rs:8:34
+  |
+8 | use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
+  |                                  ^^^^^^^^^^^^^
+
+warning: unused import: `std::process::Stdio as ProcStdio`
+  --> src/tools/agents.rs:10:5
+   |
+10 | use std::process::Stdio as ProcStdio;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Context`
+ --> src/tools/git.rs:4:14
+  |
+4 | use anyhow::{Context, Result};
+  |              ^^^^^^^
+
+warning: unused import: `Path`
+ --> src/tools/git.rs:6:17
+  |
+6 | use std::path::{Path, PathBuf};
+  |                 ^^^^
+
+warning: unused imports: `KeyEvent`, `MouseButton`, and `MouseEvent`
+ --> src/ui/dashboard.rs:5:86
+  |
+5 |     event::{self, DisableMouseCapture, EnableMouseCapture, Event as CEvent, KeyCode, KeyEvent, MouseButton, MouseEvent, MouseEventKind},
+  |                                                                                      ^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^
+
+warning: unused import: `self`
+  --> src/ui/dashboard.rs:18:10
+   |
+18 |     io::{self, stdout},
+   |          ^^^^
+
+warning: unused import: `tools::git::GitSkill`
+  --> src/main.rs:36:5
+   |
+36 | use tools::git::GitSkill;
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+error[E0728]: `await` is only allowed inside `async` functions and blocks
+   --> src/tools/agents.rs:398:103
+    |
+398 |             while let Some(Ok(bytes)) = stream.as_mut().and_then(|s| futures_util::StreamExt::next(s).await) {
+    |                                                                  --- this is not `async`              ^^^^^ only allowed inside `async` functions and blocks
+
+error[E0061]: this method takes 3 arguments but 2 arguments were supplied
+   --> src/sys/orchestrator.rs:74:29
+    |
+ 74 |                 self.memory.store(&source, &content.text).await.ok();
+    |                             ^^^^^------------------------ argument #3 of type `MemoryMetadata` is missing
+    |
+note: method defined here
+   --> src/core/memory.rs:182:18
+    |
+182 |     pub async fn store(
+    |                  ^^^^^
+...
+186 |         metadata: MemoryMetadata,
+    |         ------------------------
+help: provide the argument
+    |
+ 74 |                 self.memory.store(&source, &content.text, /* MemoryMetadata */).await.ok();
+    |                                                         ++++++++++++++++++++++
+
+error[E0061]: this method takes 3 arguments but 2 arguments were supplied
+   --> src/sys/orchestrator.rs:249:27
+    |
+249 |         match self.memory.store(parts[0], parts[1]).await {
+    |                           ^^^^^-------------------- argument #3 of type `MemoryMetadata` is missing
+    |
+note: method defined here
+   --> src/core/memory.rs:182:18
+    |
+182 |     pub async fn store(
+    |                  ^^^^^
+...
+186 |         metadata: MemoryMetadata,
+    |         ------------------------
+help: provide the argument
+    |
+249 |         match self.memory.store(parts[0], parts[1], /* MemoryMetadata */).await {
+    |                                                   ++++++++++++++++++++++
+
+error[E0382]: borrow of moved value: `response`
+   --> src/ai/llm.rs:137:53
+    |
+120 |         let response = self
+    |             -------- move occurs because `response` has type `Response`, which does not implement the `Copy` trait
+...
+136 |             let error_text = response.text().await.unwrap_or_default();
+    |                                       ------ `response` moved due to this method call
+137 |             anyhow::bail!("LLM API error ({}): {}", response.status(), error_text);
+    |                                                     ^^^^^^^^ value borrowed here after move
+    |
+note: `Response::text` takes ownership of the receiver `self`, which moves `response`
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-0.11.27/src/async_impl/response.rs:147:23
+    |
+147 |     pub async fn text(self) -> crate::Result<String> {
+    |                       ^^^^
+
+error[E0499]: cannot borrow `*self` as mutable more than once at a time
+  --> src/core/scheduler.rs:35:25
+   |
+32 |                 for (gid, dag) in self.active_dags.iter_mut() {
+   |                                   ---------------- first mutable borrow occurs here
+...
+35 |                         self.advance_dag(&gid.clone());
+   |                         ^^^^              --- first borrow later used here
+   |                         |
+   |                         second mutable borrow occurs here
+
+error[E0308]: mismatched types
+    --> src/core/memory.rs:444:21
+     |
+ 444 |         params.push(&limit as i64);
+     |                ---- ^^^^^^^^^^^^^ expected `&dyn ToSql`, found `i64`
+     |                |
+     |                arguments to this method are incorrect
+     |
+     = note: expected reference `&dyn ToSql`
+                     found type `i64`
+note: method defined here
+    --> /Users/Vladimir/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:2525:12
+     |
+2525 |     pub fn push(&mut self, value: T) {
+     |            ^^^^
+help: consider borrowing here
+     |
+ 444 |         params.push(&(&limit as i64));
+     |                     ++             +
+
+error[E0606]: casting `&usize` as `i64` is invalid
+   --> src/core/memory.rs:444:21
+    |
+444 |         params.push(&limit as i64);
+    |                     ^^^^^^^^^^^^^
+    |
+help: remove the unneeded borrow
+    |
+444 -         params.push(&limit as i64);
+444 +         params.push(limit as i64);
+    |
+
+error[E0597]: `browser` does not live long enough
+   --> src/tools/browser.rs:288:35
+    |
+267 |           let browser = match HeadlessBrowser::new() {
+    |               ------- binding `browser` declared here
+...
+288 |                   let browser_ref = &browser;
+    |                                     ^^^^^^^^ borrowed value does not live long enough
+...
+292 | /                 tokio::spawn(async move {
+293 | |                     bus_clone.emit(SystemEvent::Log {
+294 | |                         level: "INFO".into(),
+295 | |                         source: "Browser".into(),
+...   |
+327 | |                 });
+    | |__________________- argument requires that `browser` is borrowed for `'static`
+...
+332 |       }
+    |       - `browser` dropped here while still borrowed
+    |
+note: requirement that the value outlives `'static` introduced here
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.49.0/src/task/spawn.rs:171:28
+    |
+171 |         F: Future + Send + 'static,
+    |                            ^^^^^^^
+
+error[E0282]: type annotations needed for `Vec<_>`
+   --> src/tools/agents.rs:195:13
+    |
+195 |         let mut stdout_lines = Vec::new();
+    |             ^^^^^^^^^^^^^^^^   ---------- type must be known at this point
+    |
+help: consider giving `stdout_lines` an explicit type, where the type for type parameter `T` is specified
+    |
+195 |         let mut stdout_lines: Vec<T> = Vec::new();
+    |                             ++++++++
+
+error[E0382]: borrow of moved value: `response`
+   --> src/tools/agents.rs:328:54
+    |
+318 |         let response = self.client
+    |             -------- move occurs because `response` has type `Response`, which does not implement the `Copy` trait
+...
+327 |             let error_text = response.text().await.unwrap_or_default();
+    |                                       ------ `response` moved due to this method call
+328 |             anyhow::bail!("AgentAPI error ({}): {}", response.status(), error_text);
+    |                                                      ^^^^^^^^ value borrowed here after move
+    |
+note: `Response::text` takes ownership of the receiver `self`, which moves `response`
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-0.11.27/src/async_impl/response.rs:147:23
+    |
+147 |     pub async fn text(self) -> crate::Result<String> {
+    |                       ^^^^
+
+error[E0599]: no method named `bytes_stream` found for struct `Response` in the current scope
+   --> src/tools/agents.rs:396:33
+    |
+396 |                 .and_then(|r| r.bytes_stream().into_stream());
+    |                                 ^^^^^^^^^^^^ method not found in `Response`
+
+error[E0277]: the size for values of type `[u8]` cannot be known at compilation time
+   --> src/tools/agents.rs:398:31
+    |
+398 |             while let Some(Ok(bytes)) = stream.as_mut().and_then(|s| futures_util::StreamExt::next(s).await) {
+    |                               ^^^^^ doesn't have a size known at compile-time
+    |
+    = help: the trait `Sized` is not implemented for `[u8]`
+    = note: all local variables must have a statically known size
+
+error[E0277]: the size for values of type `[u8]` cannot be known at compilation time
+   --> src/tools/agents.rs:398:28
+    |
+398 |             while let Some(Ok(bytes)) = stream.as_mut().and_then(|s| futures_util::StreamExt::next(s).await) {
+    |                            ^^^^^^^^^ doesn't have a size known at compile-time
+    |
+    = help: the trait `Sized` is not implemented for `[u8]`
+note: required by a bound in `std::prelude::v1::Ok`
+   --> /Users/Vladimir/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/library/core/src/result.rs:557:17
+    |
+557 | pub enum Result<T, E> {
+    |                 ^ required by this bound in `std::prelude::v1::Ok`
+...
+561 |     Ok(#[stable(feature = "rust1", since = "1.0.0")] T),
+    |     -- required by a bound in this tuple variant
+
+error[E0277]: the size for values of type `[u8]` cannot be known at compilation time
+   --> src/tools/agents.rs:398:41
+    |
+398 |             while let Some(Ok(bytes)) = stream.as_mut().and_then(|s| futures_util::StreamExt::next(s).await) {
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ doesn't have a size known at compile-time
+    |
+    = help: the trait `Sized` is not implemented for `[u8]`
+note: required by an implicit `Sized` bound in `Result`
+   --> /Users/Vladimir/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/library/core/src/result.rs:557:17
+    |
+557 | pub enum Result<T, E> {
+    |                 ^ required by the implicit `Sized` requirement on this type parameter in `Result`
+
+error[E0597]: `git` does not live long enough
+   --> src/tools/git.rs:405:31
+    |
+394 |           let git = GitSkill::new(working_dir);
+    |               --- binding `git` declared here
+...
+405 |                   let git_ref = &git;
+    |                                 ^^^^ borrowed value does not live long enough
+...
+409 | /                 tokio::spawn(async move {
+410 | |                     bus_clone.emit(SystemEvent::Log {
+411 | |                         level: "INFO".into(),
+412 | |                         source: "Git".into(),
+...   |
+453 | |                 });
+    | |__________________- argument requires that `git` is borrowed for `'static`
+...
+458 |       }
+    |       - `git` dropped here while still borrowed
+    |
+note: requirement that the value outlives `'static` introduced here
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.49.0/src/task/spawn.rs:171:28
+    |
+171 |         F: Future + Send + 'static,
+    |                            ^^^^^^^
+
+error[E0599]: no method named `global_cpu_usage` found for struct `sysinfo::System` in the current scope
+   --> src/ui/dashboard.rs:214:27
+    |
+214 |             let cpu = sys.global_cpu_usage();
+    |                           ^^^^^^^^^^^^^^^^
+    |
+help: there is a method `global_cpu_info` with a similar name
+    |
+214 -             let cpu = sys.global_cpu_usage();
+214 +             let cpu = sys.global_cpu_info();
+    |
+
+error[E0599]: `MemoryStats` doesn't implement `std::fmt::Display`
+    --> src/sys/orchestrator.rs:306:48
+     |
+ 306 |         self.memory.get_stats().ok().map(|s| s.to_string())
+     |                                                ^^^^^^^^^ method cannot be called on `MemoryStats` due to unsatisfied trait bounds
+     |
+    ::: src/core/memory.rs:61:1
+     |
+  61 | pub struct MemoryStats {
+     | ---------------------- method `to_string` not found for this struct because it doesn't satisfy `MemoryStats: ToString` or `MemoryStats: std::fmt::Display`
+     |
+     = note: the following trait bounds were not satisfied:
+             `MemoryStats: std::fmt::Display`
+             which is required by `MemoryStats: ToString`
+note: the trait `std::fmt::Display` must be implemented
+    --> /Users/Vladimir/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/library/core/src/fmt/mod.rs:1186:1
+     |
+1186 | pub trait Display: PointeeSized {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following trait defines an item `to_string`, perhaps you need to implement it:
+             candidate #1: `ToString`
+
+error[E0599]: no method named `optional` found for enum `Result<T, E>` in the current scope
+   --> src/core/memory.rs:536:12
+    |
+507 |           let doc = stmt.query_row(params![id], |row| {
+    |  ___________________-
+508 | |             let id: String = row.get(0)?;
+509 | |             let content: String = row.get(1)?;
+510 | |             let title: Option<String> = row.get(2)?;
+...   |
+535 | |             })
+536 | |         }).optional()?;
+    | |           -^^^^^^^^ method not found in `Result<KnowledgeDocument, duckdb::Error>`
+    | |___________|
+    |
+    |
+   ::: /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/duckdb-1.4.4/src/lib.rs:183:8
+    |
+183 |       fn optional(self) -> Result<Option<T>>;
+    |          -------- the method is available for `Result<KnowledgeDocument, duckdb::Error>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `OptionalExt` which provides `optional` is implemented but not in scope; perhaps you want to import it
+    |
+  1 + use duckdb::OptionalExt;
+    |
+
+error[E0277]: `DagState` doesn't implement `Debug`
+    --> src/core/timetravel.rs:17:5
+     |
+  12 | #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+     |          ----- in this derive macro expansion
+...
+  17 |     pub dag_states: HashMap<String, DagState>,
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Debug` is not implemented for `DagState`
+     |
+     = note: add `#[derive(Debug)]` to `DagState` or manually `impl Debug for DagState`
+help: the trait `Debug` is implemented for `HashMap<K, V, S>`
+    --> /Users/Vladimir/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/library/std/src/collections/hash/map.rs:1344:1
+     |
+1344 | / impl<K, V, S> Debug for HashMap<K, V, S>
+1345 | | where
+1346 | |     K: Debug,
+1347 | |     V: Debug,
+     | |_____________^
+help: consider annotating `DagState` with `#[derive(Debug)]`
+    -->  src/core/dag.rs:26:1
+     |
+  26 + #[derive(Debug)]
+  27 | pub struct DagState {
+     |
+
+error[E0277]: the trait bound `DagState: Clone` is not satisfied
+  --> src/core/timetravel.rs:17:5
+   |
+12 | #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+   |                 ----- in this derive macro expansion
+...
+17 |     pub dag_states: HashMap<String, DagState>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `DagState`
+   |
+   = note: required for `HashMap<std::string::String, DagState>` to implement `Clone`
+help: consider annotating `DagState` with `#[derive(Clone)]`
+  --> src/core/dag.rs:26:1
+   |
+26 + #[derive(Clone)]
+27 | pub struct DagState {
+   |
+
+error[E0277]: the trait bound `DagState: serde::Serialize` is not satisfied
+    --> src/core/timetravel.rs:12:24
+     |
+  12 | #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+     |                        ^^^^^^^^^ unsatisfied trait bound
+...
+  17 |     pub dag_states: HashMap<String, DagState>,
+     |     --- required by a bound introduced by this call
+     |
+help: the trait `Serialize` is not implemented for `DagState`
+    --> src/core/dag.rs:26:1
+     |
+  26 | pub struct DagState {
+     | ^^^^^^^^^^^^^^^^^^^
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `DagState` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 163 others
+     = note: required for `HashMap<std::string::String, DagState>` to implement `Serialize`
+note: required by a bound in `bus::_::_serde::ser::SerializeStruct::serialize_field`
+    --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `DagState: serde::Deserialize<'de>` is not satisfied
+    --> src/core/timetravel.rs:17:21
+     |
+  17 |     pub dag_states: HashMap<String, DagState>,
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+     |
+help: the trait `Deserialize<'_>` is not implemented for `DagState`
+    --> src/core/dag.rs:26:1
+     |
+  26 | pub struct DagState {
+     | ^^^^^^^^^^^^^^^^^^^
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `DagState` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a Path
+               &'a [u8]
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+             and 181 others
+     = note: required for `HashMap<std::string::String, DagState>` to implement `Deserialize<'_>`
+note: required by a bound in `next_element`
+    --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `DagState: serde::Deserialize<'de>` is not satisfied
+    --> src/core/timetravel.rs:17:21
+     |
+  17 |     pub dag_states: HashMap<String, DagState>,
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+     |
+help: the trait `Deserialize<'_>` is not implemented for `DagState`
+    --> src/core/dag.rs:26:1
+     |
+  26 | pub struct DagState {
+     | ^^^^^^^^^^^^^^^^^^^
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `DagState` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a Path
+               &'a [u8]
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+             and 181 others
+     = note: required for `HashMap<std::string::String, DagState>` to implement `Deserialize<'_>`
+note: required by a bound in `next_value`
+    --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `DagState: serde::Deserialize<'de>` is not satisfied
+  --> src/core/timetravel.rs:12:35
+   |
+12 | #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+   |                                   ^^^^^^^^^^^ unsatisfied trait bound
+   |
+help: the trait `Deserialize<'_>` is not implemented for `DagState`
+  --> src/core/dag.rs:26:1
+   |
+26 | pub struct DagState {
+   | ^^^^^^^^^^^^^^^^^^^
+   = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `DagState` type
+   = note: for types from other crates check whether the crate offers a `serde` feature flag
+   = help: the following other types implement trait `Deserialize<'de>`:
+             &'a Path
+             &'a [u8]
+             &'a str
+             ()
+             (T,)
+             (T0, T1)
+             (T0, T1, T2)
+             (T0, T1, T2, T3)
+           and 181 others
+   = note: required for `HashMap<std::string::String, DagState>` to implement `Deserialize<'_>`
+note: required by a bound in `bus::_::_serde::__private228::de::missing_field`
+  --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:26:8
+   |
+24 | pub fn missing_field<'de, V, E>(field: &'static str) -> Result<V, E>
+   |        ------------- required by a bound in this function
+25 | where
+26 |     V: Deserialize<'de>,
+   |        ^^^^^^^^^^^^^^^^ required by this bound in `missing_field`
+   = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `?` couldn't convert the error to `duckdb::Error`
+   --> src/core/timetravel.rs:104:80
+    |
+104 |             let snapshot: SystemSnapshot = serde_json::from_str(&snapshot_json)?;
+    |                                            ------------------------------------^ the trait `From<serde_json::Error>` is not implemented for `duckdb::Error`
+    |                                            |
+    |                                            this can't be annotated with `?` because it has type `Result<_, serde_json::Error>`
+    |
+    = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+help: the following other types implement trait `From<T>`
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/duckdb-1.4.4/src/error.rs:122:1
+    |
+122 | impl From<str::Utf8Error> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<std::str::Utf8Error>`
+...
+129 | impl From<::std::ffi::NulError> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<std::ffi::NulError>`
+...
+140 | impl From<FromSqlError> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<FromSqlError>`
+
+error[E0599]: no method named `optional` found for enum `Result<T, E>` in the current scope
+   --> src/core/timetravel.rs:106:12
+    |
+102 |           let snapshot = stmt.query_row(params![timestamp.to_rfc3339()], |row| {
+    |  ________________________-
+103 | |             let snapshot_json: String = row.get(0)?;
+104 | |             let snapshot: SystemSnapshot = serde_json::from_str(&snapshot_json)?;
+105 | |             Ok(snapshot)
+106 | |         }).optional()?;
+    | |           -^^^^^^^^ method not found in `Result<SystemSnapshot, duckdb::Error>`
+    | |___________|
+    |
+    |
+   ::: /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/duckdb-1.4.4/src/lib.rs:183:8
+    |
+183 |       fn optional(self) -> Result<Option<T>>;
+    |          -------- the method is available for `Result<SystemSnapshot, duckdb::Error>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `OptionalExt` which provides `optional` is implemented but not in scope; perhaps you want to import it
+    |
+  4 + use duckdb::OptionalExt;
+    |
+
+error[E0277]: `?` couldn't convert the error to `duckdb::Error`
+   --> src/core/timetravel.rs:125:80
+    |
+125 |             let snapshot: SystemSnapshot = serde_json::from_str(&snapshot_json)?;
+    |                                            ------------------------------------^ the trait `From<serde_json::Error>` is not implemented for `duckdb::Error`
+    |                                            |
+    |                                            this can't be annotated with `?` because it has type `Result<_, serde_json::Error>`
+    |
+    = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+help: the following other types implement trait `From<T>`
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/duckdb-1.4.4/src/error.rs:122:1
+    |
+122 | impl From<str::Utf8Error> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<std::str::Utf8Error>`
+...
+129 | impl From<::std::ffi::NulError> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<std::ffi::NulError>`
+...
+140 | impl From<FromSqlError> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<FromSqlError>`
+
+error[E0277]: `?` couldn't convert the error to `duckdb::Error`
+   --> src/core/timetravel.rs:152:68
+    |
+152 |             let event: SystemEvent = serde_json::from_str(&payload)?;
+    |                                      ------------------------------^ the trait `From<serde_json::Error>` is not implemented for `duckdb::Error`
+    |                                      |
+    |                                      this can't be annotated with `?` because it has type `Result<_, serde_json::Error>`
+    |
+    = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+help: the following other types implement trait `From<T>`
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/duckdb-1.4.4/src/error.rs:122:1
+    |
+122 | impl From<str::Utf8Error> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<std::str::Utf8Error>`
+...
+129 | impl From<::std::ffi::NulError> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<std::ffi::NulError>`
+...
+140 | impl From<FromSqlError> for Error {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `duckdb::Error` implements `From<FromSqlError>`
+
+error[E0308]: mismatched types
+   --> src/tools/git.rs:191:24
+    |
+191 |                 if let Some(p) = path {
+    |                        ^^^^^^^   ---- this expression has type `&std::string::String`
+    |                        |
+    |                        expected `String`, found `Option<_>`
+    |
+    = note: expected struct `std::string::String`
+                 found enum `std::option::Option<_>`
+
+error[E0599]: no method named `area` found for mutable reference `&mut Frame<'_>` in the current scope
+   --> src/ui/dashboard.rs:342:18
+    |
+342 |         .split(f.area());
+    |                  ^^^^ method not found in `&mut Frame<'_>`
+
+error[E0658]: use of unstable library feature `str_as_str`
+   --> src/ui/dashboard.rs:389:31
+    |
+389 |         .map(|t| Line::from(t.as_str()))
+    |                               ^^^^^^
+    |
+    = note: see issue #130366 <https://github.com/rust-lang/rust/issues/130366> for more information
+
+error[E0308]: mismatched types
+   --> src/ui/dashboard.rs:549:15
+    |
+549 |         .data(ram_data.iter().rev());
+    |          ---- ^^^^^^^^^^^^^^^^^^^^^ expected `&[u64]`, found `Rev<Iter<'_, u64>>`
+    |          |
+    |          arguments to this method are incorrect
+    |
+    = note: expected reference `&[u64]`
+                  found struct `Rev<std::slice::Iter<'_, u64>>`
+note: method defined here
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-0.26.3/src/widgets/sparkline.rs:108:18
+    |
+108 |     pub const fn data(mut self, data: &'a [u64]) -> Self {
+    |                  ^^^^
+
+error[E0308]: mismatched types
+   --> src/ui/dashboard.rs:558:15
+    |
+558 |         .data(cpu_data.iter().rev());
+    |          ---- ^^^^^^^^^^^^^^^^^^^^^ expected `&[u64]`, found `Rev<Iter<'_, f32>>`
+    |          |
+    |          arguments to this method are incorrect
+    |
+    = note: expected reference `&[u64]`
+                  found struct `Rev<std::slice::Iter<'_, f32>>`
+note: method defined here
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-0.26.3/src/widgets/sparkline.rs:108:18
+    |
+108 |     pub const fn data(mut self, data: &'a [u64]) -> Self {
+    |                  ^^^^
+
+error[E0599]: no method named `set_cursor_position` found for mutable reference `&mut Frame<'_>` in the current scope
+   --> src/ui/dashboard.rs:699:11
+    |
+699 |         f.set_cursor_position((area.x + input_width, area.y + input_height));
+    |           ^^^^^^^^^^^^^^^^^^^
+    |
+help: there is a method `set_cursor` with a similar name, but with different arguments
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-0.26.3/src/terminal/frame.rs:169:5
+    |
+169 |     pub fn set_cursor(&mut self, x: u16, y: u16) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: future cannot be sent between threads safely
+   --> src/sys/orchestrator.rs:339:13
+    |
+339 | /             tokio::spawn(async move {
+340 | |                 if let Err(e) = orch.handle_task(task_id, tool, input, bus).await {
+341 | |                     eprintln!("Orchestrator error: {}", e);
+342 | |                 }
+343 | |             });
+    | |______________^ future created by async block is not `Send`
+    |
+    = help: within `VectorMemory`, the trait `Sync` is not implemented for `RefCell<duckdb::inner_connection::InnerConnection>`
+    = note: if you want to do aliasing and mutation between multiple threads, use `std::sync::RwLock` instead
+note: captured value is not `Send`
+   --> src/sys/orchestrator.rs:340:33
+    |
+340 |                 if let Err(e) = orch.handle_task(task_id, tool, input, bus).await {
+    |                                 ^^^^ has type `Arc<Orchestrator>` which is not `Send`
+note: required by a bound in `tokio::spawn`
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.49.0/src/task/spawn.rs:171:21
+    |
+169 |     pub fn spawn<F>(future: F) -> JoinHandle<F::Output>
+    |            ----- required by a bound in this function
+170 |     where
+171 |         F: Future + Send + 'static,
+    |                     ^^^^ required by this bound in `spawn`
+
+error: future cannot be sent between threads safely
+   --> src/sys/orchestrator.rs:339:13
+    |
+339 | /             tokio::spawn(async move {
+340 | |                 if let Err(e) = orch.handle_task(task_id, tool, input, bus).await {
+341 | |                     eprintln!("Orchestrator error: {}", e);
+342 | |                 }
+343 | |             });
+    | |______________^ future created by async block is not `Send`
+    |
+    = help: within `VectorMemory`, the trait `Sync` is not implemented for `RefCell<hashlink::lru_cache::LruCache<Arc<str>, duckdb::raw_statement::RawStatement>>`
+    = note: if you want to do aliasing and mutation between multiple threads, use `std::sync::RwLock` instead
+note: captured value is not `Send`
+   --> src/sys/orchestrator.rs:340:33
+    |
+340 |                 if let Err(e) = orch.handle_task(task_id, tool, input, bus).await {
+    |                                 ^^^^ has type `Arc<Orchestrator>` which is not `Send`
+note: required by a bound in `tokio::spawn`
+   --> /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.49.0/src/task/spawn.rs:171:21
+    |
+169 |     pub fn spawn<F>(future: F) -> JoinHandle<F::Output>
+    |            ----- required by a bound in this function
+170 |     where
+171 |         F: Future + Send + 'static,
+    |                     ^^^^ required by this bound in `spawn`
+
+warning: unused variable: `source`
+   --> src/core/memory.rs:184:9
+    |
+184 |         source: &str,
+    |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_source`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `source`
+   --> src/core/memory.rs:217:9
+    |
+217 |         source: &str,
+    |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_source`
+
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `headless_chrome`
+  --> src/tools/browser.rs:25:13
+   |
+25 |             headless_chrome::LaunchOptions {
+   |             ^^^^^^^^^^^^^^^ use of unresolved module or unlinked crate `headless_chrome`
+   |
+   = help: if you wanted to use a crate named `headless_chrome`, use `cargo add headless_chrome` to add it to your `Cargo.toml`
+
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `headless_chrome`
+   --> src/tools/browser.rs:192:35
+    |
+192 |     fn extract_links(&self, tab: &headless_chrome::Tab) -> Result<Vec<String>> {
+    |                                   ^^^^^^^^^^^^^^^ use of unresolved module or unlinked crate `headless_chrome`
+    |
+    = help: if you wanted to use a crate named `headless_chrome`, use `cargo add headless_chrome` to add it to your `Cargo.toml`
+
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `headless_chrome`
+   --> src/tools/browser.rs:204:38
+    |
+204 |     fn scroll_to_bottom(&self, tab: &headless_chrome::Tab) -> Result<()> {
+    |                                      ^^^^^^^^^^^^^^^ use of unresolved module or unlinked crate `headless_chrome`
+    |
+    = help: if you wanted to use a crate named `headless_chrome`, use `cargo add headless_chrome` to add it to your `Cargo.toml`
+
+Some errors have detailed explanations: E0061, E0277, E0282, E0308, E0382, E0425, E0432, E0433, E0499...
+For more information about an error, try `rustc --explain E0061`.
+warning: `ant` (bin "ant") generated 13 warnings
+error: could not compile `ant` (bin "ant") due to 52 previous errors; 13 warnings emitted

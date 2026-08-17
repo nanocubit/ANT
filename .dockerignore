@@ -1,0 +1,51 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Build artifacts
+/target/
+Cargo.lock
+
+# Logs and data
+/logs/
+/sandbox_data/
+/skills/*.wasm
+*.duckdb
+*.db
+
+# Documentation
+*.md
+!Cargo.toml
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# K8s
+k8s-deployment.yaml
+nats-cluster.yaml
+
+# CI/CD
+.github/
+
+# Test
+tests/
+benches/
+examples/
+
+# Config
+.env
+.env.local
+prometheus.yml
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,23 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling wasmtime v14.0.4
+   Compiling arrow-cast v56.2.0
+   Compiling url v2.5.8
+   Compiling tokio-native-tls v0.3.1
+rustc-LLVM ERROR: IO failure on output stream: No space left on device
+error: could not compile `tokio-native-tls` (lib)
+
+Caused by:
+  No space left on device (os error 28)
+
+Caused by:
+  failed to parse process output: `/Users/Vladimir/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustc --crate-name tokio_native_tls --edition=2018 /Users/Vladimir/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-native-tls-0.3.1/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 -C split-debuginfo=unpacked --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("vendored"))' -C metadata=1af11f9962350370 -C extra-filename=-3eefca88a357ac0c --out-dir /Users/Vladimir/code/ant/target/debug/deps -L dependency=/Users/Vladimir/code/ant/target/debug/deps --extern native_tls=/Users/Vladimir/code/ant/target/debug/deps/libnative_tls-6db6fa5cb259e4c7.rmeta --extern tokio=/Users/Vladimir/code/ant/target/debug/deps/libtokio-9bb6db27d98396c3.rmeta --cap-lints allow` (exit status: 101)
+warning: build failed, waiting for other jobs to finish...
+error: failed to write to `/Users/Vladimir/code/ant/target/debug/deps/rmetas1XCdq/full.rmeta`: No space left on device (os error 28)
+
+error: could not compile `url` (lib) due to 1 previous error
+error: failed to write to `/Users/Vladimir/code/ant/target/debug/deps/rmetatUfkdN/full.rmeta`: No space left on device (os error 28)
+
+error: could not compile `arrow-cast` (lib) due to 1 previous error
+error: failed to write to `/Users/Vladimir/code/ant/target/debug/deps/rmetaBGmC9Y/full.rmeta`: No space left on device (os error 28)
+
+error: could not compile `wasmtime` (lib) due to 1 previous error

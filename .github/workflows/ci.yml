@@ -1,0 +1,247 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_VERSION: "1.75"
+  # Use locked dependencies for reproducibility
+  CARGO_LOCKED: "1"
+
+jobs:
+  # === Quick Syntax Check (fastest feedback, ~2-3 min) ===
+  quick-check:
+    name: Quick Check (cargo check)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-action@stable
+      with:
+        toolchain: ${{ env.RUST_VERSION }}
+        cache: true
+
+    - name: Cache cargo dependencies (rust-cache)
+      uses: Swatinem/rust-cache@v2
+      with:
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        shared-key: ${{ runner.os }}-cargo-shared
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq pkg-config libssl-dev
+
+    - name: Quick syntax check (default features)
+      run: cargo check --locked --features "metrics,structured-logs"
+
+    - name: Quick syntax check (minimal features)
+      run: cargo check --locked --no-default-features --features minimal
+
+    - name: Quick syntax check (full features)
+      run: cargo check --locked --features "full"
+
+  # === Formatting & Linting ===
+  fmt-clippy:
+    name: Format & Clippy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: quick-check
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-action@stable
+      with:
+        toolchain: ${{ env.RUST_VERSION }}
+        components: rustfmt, clippy
+        cache: true
+
+    - name: Cache cargo dependencies
+      uses: Swatinem/rust-cache@v2
+      with:
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        shared-key: ${{ runner.os }}-cargo-shared
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq pkg-config libssl-dev
+
+    - name: Check formatting
+      run: cargo fmt --all -- --check
+
+    - name: Run clippy (default features)
+      run: cargo clippy --locked --features "metrics,structured-logs" -- -D warnings
+
+    - name: Run clippy (all features)
+      run: cargo clippy --locked --all-features -- -D warnings
+
+  # === Tests ===
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: quick-check
+    strategy:
+      matrix:
+        include:
+          - features: "metrics,structured-logs"
+            name: "Default Features"
+            args: ""
+          - features: "full"
+            name: "All Features"
+            args: ""
+          - features: "minimal"
+            name: "Minimal Features"
+            args: "--no-default-features"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-action@stable
+      with:
+        toolchain: ${{ env.RUST_VERSION }}
+        cache: true
+
+    - name: Cache cargo dependencies
+      uses: Swatinem/rust-cache@v2
+      with:
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        shared-key: ${{ runner.os }}-cargo-shared
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq pkg-config libssl-dev
+
+    - name: Run tests (${{ matrix.name }})
+      run: cargo test --locked ${{ matrix.args }} --features "${{ matrix.features }}" --verbose
+
+  # === Build Release Binaries ===
+  build:
+    name: Build Release
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    needs: [quick-check, fmt-clippy]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            suffix: linux-amd64
+            features: "metrics,structured-logs"
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            suffix: darwin-amd64
+            features: "metrics,structured-logs"
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            suffix: darwin-arm64
+            features: "metrics,structured-logs"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-action@stable
+      with:
+        toolchain: ${{ env.RUST_VERSION }}
+        targets: ${{ matrix.target }}
+        cache: true
+
+    - name: Cache cargo dependencies
+      uses: Swatinem/rust-cache@v2
+      with:
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        shared-key: ${{ runner.os }}-cargo-shared
+
+    - name: Install dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq pkg-config libssl-dev
+
+    - name: Build release
+      run: cargo build --locked --release --target ${{ matrix.target }} --features "${{ matrix.features }}"
+
+    - name: Verify binary
+      run: |
+        if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+          ./target/${{ matrix.target }}/release/ant --version
+          ./target/${{ matrix.target }}/release/antctl --version
+        fi
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ant-${{ matrix.suffix }}
+        path: target/${{ matrix.target }}/release/ant*
+        retention-days: 7
+
+  # === Docker Build ===
+  docker:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [test, build]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false
+        tags: ant:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        load: true
+
+    - name: Test Docker image
+      run: |
+        docker run --rm ant:latest antctl health || true
+
+  # === Benchmarks (optional, manual/scheduled trigger) ===
+  bench:
+    name: Benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-action@stable
+      with:
+        toolchain: ${{ env.RUST_VERSION }}
+        cache: true
+
+    - name: Cache cargo dependencies
+      uses: Swatinem/rust-cache@v2
+      with:
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        shared-key: ${{ runner.os }}-cargo-shared
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq pkg-config libssl-dev
+
+    - name: Run benchmarks
+      run: cargo bench --locked --features "metrics,structured-logs" -- --no-run

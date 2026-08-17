@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  # NATS Cluster для distributed event bus
+  nats:
+    image: nats:2.10-alpine
+    command: nats-server --jetstream
+    ports:
+      - "4222:4222"   # Client
+      - "8222:8222"   # Monitoring
+    volumes:
+      - nats_data:/data
+    networks:
+      - ant-network
+    deploy:
+      replicas: 1
+    healthcheck:
+      test: ["CMD", "nats-server", "-sl=ldm"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Redis для distributed state store (опционально)
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ant-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ANT OS Application
+  ant:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ant:latest
+    container_name: ant-os
+    ports:
+      - "9090:9090"
+    environment:
+      - RUST_LOG=info,ant=debug
+      - NATS_URL=nats://nats:4222
+      - REDIS_URL=redis://redis:6379
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - WASM_FUEL_LIMIT=10000000
+      - WASM_MEMORY_LIMIT=67108864
+      - WASM_TIME_LIMIT_MS=30000
+      - METRICS_PORT=9090
+      - DUCKDB_PATH=/data/ant_audit.duckdb
+      - POD_NAME=${POD_NAME:-ant-1}
+    volumes:
+      - ./skills:/data/skills
+      - ./sandbox_data:/data/sandbox_data
+      - ./logs:/data/logs
+      - ant_data:/data
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - ant-network
+    healthcheck:
+      test: ["CMD", "antctl", "health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # Prometheus для сбора метрик
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=7d'
+      - '--web.enable-lifecycle'
+    networks:
+      - ant-network
+    depends_on:
+      - ant
+    restart: unless-stopped
+
+networks:
+  ant-network:
+    driver: bridge
+
+volumes:
+  nats_data:
+  redis_data:
+  prometheus_data:
+  ant_data:

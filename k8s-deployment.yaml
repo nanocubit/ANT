@@ -1,0 +1,350 @@
+---
+# Namespace для ANT OS
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: antos
+  labels:
+    name: antos
+
+---
+# NATS Cluster StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nats
+  namespace: antos
+  labels:
+    app: nats
+spec:
+  serviceName: nats
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nats
+  template:
+    metadata:
+      labels:
+        app: nats
+    spec:
+      containers:
+      - name: nats
+        image: nats:2.10-alpine
+        ports:
+        - containerPort: 4222
+          name: client
+        - containerPort: 8222
+          name: monitoring
+        - containerPort: 6222
+          name: cluster
+        command:
+        - nats-server
+        - --jetstream
+        - --cluster_name=ANTOS
+        - --cluster
+        - nats://0.0.0.0:6222
+        - --routes
+        - nats://nats-0.nats.antos.svc.cluster.local:6222
+        - nats://nats-1.nats.antos.svc.cluster.local:6222
+        - nats://nats-2.nats.antos.svc.cluster.local:6222
+        volumeMounts:
+        - name: nats-jetstream
+          mountPath: /data/jetstream
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8222
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8222
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+  volumeClaimTemplates:
+  - metadata:
+      name: nats-jetstream
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Gi
+
+---
+# NATS Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats
+  namespace: antos
+  labels:
+    app: nats
+spec:
+  clusterIP: None
+  ports:
+  - port: 4222
+    name: client
+  - port: 8222
+    name: monitoring
+  selector:
+    app: nats
+
+---
+# Redis StatefulSet (для distributed state store)
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: antos
+  labels:
+    app: redis
+spec:
+  serviceName: redis
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        command:
+        - redis-server
+        - --appendonly
+        - "yes"
+        ports:
+        - containerPort: 6379
+          name: redis
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi
+
+---
+# Redis Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: antos
+  labels:
+    app: redis
+spec:
+  clusterIP: None
+  ports:
+  - port: 6379
+    name: redis
+  selector:
+    app: redis
+
+---
+# ANT OS Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ant
+  namespace: antos
+  labels:
+    app: ant
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ant
+  template:
+    metadata:
+      labels:
+        app: ant
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: ant-service-account
+      containers:
+      - name: ant
+        image: antos/ant:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9090
+          name: metrics
+        env:
+        - name: RUST_LOG
+          value: "info,ant=debug"
+        - name: NATS_URL
+          value: "nats://nats.antos.svc.cluster.local:4222"
+        - name: REDIS_URL
+          value: "redis://redis.antos.svc.cluster.local:6379"
+        - name: OPENROUTER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ant-secrets
+              key: openrouter-api-key
+              optional: true
+        - name: WASM_FUEL_LIMIT
+          value: "10000000"
+        - name: WASM_MEMORY_LIMIT
+          value: "67108864"
+        - name: WASM_TIME_LIMIT_MS
+          value: "30000"
+        - name: METRICS_PORT
+          value: "9090"
+        - name: DUCKDB_PATH
+          value: "/data/ant_audit.duckdb"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9090
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 9090
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: skills
+          mountPath: /data/skills
+        - name: sandbox-data
+          mountPath: /data/sandbox_data
+        - name: logs
+          mountPath: /data/logs
+      volumes:
+      - name: skills
+        emptyDir: {}
+      - name: sandbox-data
+        emptyDir: {}
+      - name: logs
+        emptyDir: {}
+      - name: ant-service-account
+        emptyDir: {}
+
+---
+# ANT OS Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ant
+  namespace: antos
+  labels:
+    app: ant
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9090
+    targetPort: 9090
+    name: metrics
+  selector:
+    app: ant
+
+---
+# Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ant-hpa
+  namespace: antos
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ant
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+# Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ant-service-account
+  namespace: antos
+
+---
+# Secret для API ключей
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ant-secrets
+  namespace: antos
+type: Opaque
+stringData:
+  openrouter-api-key: "your-api-key-here"
+
+---
+# ConfigMap для конфигурации
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ant-config
+  namespace: antos
+data:
+  RUST_LOG: "info,ant=debug"
+  METRICS_PORT: "9090"
+  WASM_FUEL_LIMIT: "10000000"
+  WASM_MEMORY_LIMIT: "67108864"

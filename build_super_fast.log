@@ -1,0 +1,27 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.44
+   Compiling libc v0.2.182
+   Compiling cfg-if v1.0.4
+   Compiling serde_core v1.0.228
+   Compiling libm v0.2.16
+   Compiling autocfg v1.5.0
+   Compiling num-traits v0.2.19
+   Compiling syn v2.0.117
+   Compiling serde v1.0.228
+   Compiling core-foundation-sys v0.8.7
+   Compiling bitflags v2.11.0
+error: failed to write bytecode to /Users/Vladimir/code/ant/target/release/deps/bitflags-98538797d357cea9.bitflags.7cd8cfa17b9928cc-cgu.0.rcgu.bc: No such file or directory (os error 2)
+
+error: could not compile `bitflags` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: couldn't create a temp dir: No such file or directory (os error 2) at path "/Users/Vladimir/code/ant/target/release/deps/rmetatd4IkW"
+
+error: could not compile `libm` (lib) due to 1 previous error
+error: failed to run custom build command for `num-traits v0.2.19`
+
+Caused by:
+  process didn't exit successfully: `/Users/Vladimir/code/ant/target/release/build/num-traits-3c722241918bd1e6/build-script-build` (signal: 9, SIGKILL: kill)
+error: couldn't create a temp dir: No such file or directory (os error 2) at path "/Users/Vladimir/code/ant/target/release/deps/rmetarnTCkr"
+
+error: could not compile `syn` (lib) due to 1 previous error

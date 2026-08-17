@@ -1,0 +1,55 @@
+# Rust build artifacts
+/target/
+Cargo.lock
+
+# Backup files
+*.rs.bk
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and data directories
+/logs/
+/sandbox_data/
+/skills/*.wasm
+
+# Database files
+*.duckdb
+*.db
+
+# Environment files
+.env
+.env.local
+
+# Benchmark results
+criterion/
+
+# Coverage reports
+*.gcda
+*.gcno
+*.gcov
+*.info
+coverage/
+lcov/
+
+# Profiling
+*.profraw
+*.profdata
+perf.data
+perf.data.old
+flamegraph.svg
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/

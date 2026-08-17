@@ -1,0 +1,139 @@
+[package]
+name = "ant"
+version = "0.9.0"
+edition = "2021"
+rust-version = "1.75"
+description = "AI Orchestration System with Hybrid Memory and Multi-Agent Support"
+authors = ["ANT Team"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/antos/ant"
+keywords = ["wasm", "ai", "microkernel", "scheduler", "actor-model"]
+
+[dependencies]
+# === Async Runtime ===
+tokio = { version = "1.43", features = ["full", "tracing", "signal"] }
+
+# === Serialization ===
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# === Error Handling ===
+anyhow = "1.0"
+thiserror = "1.0"
+
+# === Utilities ===
+uuid = { version = "1.15", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+dotenv = "0.15"
+
+# === Database (DuckDB) - всегда включена ===
+duckdb = { version = "1.1", features = ["bundled"] }
+
+# === HTTP Client ===
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+
+# === TUI (Terminal UI) ===
+ratatui = "0.29"
+crossterm = "0.28"
+
+# === System Information ===
+sysinfo = "0.30"
+
+# === Directories ===
+dirs = "5.0"
+dunce = "1.0"
+
+# === Text Processing ===
+regex = "1.10"
+
+# === Futures ===
+futures = "0.3"
+futures-util = "0.3"
+
+# === CLI ===
+clap = { version = "4.5", features = ["derive"] }
+
+# === Metrics & Monitoring ===
+prometheus = { version = "0.13", optional = true }
+warp = { version = "0.3", optional = true }
+bytes = "1.0"
+
+# === Distributed Event Bus (optional) ===
+async-nats = { version = "0.33", optional = true }
+redis = { version = "0.25", features = ["tokio-comp", "connection-manager"], optional = true }
+
+# === Optional: WASM Runtime ===
+wasmtime = { version = "29.0", features = ["async", "component-model"], optional = true }
+wasmtime-wasi = { version = "29.0", optional = true }
+
+# === Optional: Browser Automation ===
+headless_chrome = { version = "1.0", optional = true }
+
+# === Optional: Embeddings ===
+fastembed = { version = "3.0", optional = true }
+
+# === Optional: Git ===
+git2 = { version = "0.18", optional = true }
+
+# === Logging ===
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-appender = { version = "0.2", optional = true }
+
+# === Concurrency ===
+dashmap = "6.1"
+parking_lot = "0.12"
+
+# === Retry/Backoff ===
+backon = "1.4"
+
+[dev-dependencies]
+tokio-test = "0.4"
+criterion = { version = "0.5", features = ["async_tokio"] }
+mockall = "0.13"
+tempfile = "3.16"
+
+[[bench]]
+name = "scheduler_bench"
+harness = false
+
+[features]
+default = ["metrics", "structured-logs"]
+minimal = []
+distributed = ["async-nats", "redis"]
+metrics = ["prometheus", "warp"]
+structured-logs = ["tracing-appender"]
+with-wasm = ["wasmtime", "wasmtime-wasi"]
+with-browser = ["headless_chrome", "fastembed"]
+with-embeddings = ["fastembed"]
+with-git = ["git2"]
+full = ["distributed", "with-wasm", "with-browser", "with-git"]
+
+# === Build Profiles ===
+
+# Release: максимальная оптимизация
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = true
+
+# Dev: быстрая компиляция
+[profile.dev]
+opt-level = 0
+debug = 1
+
+# Оптимизация зависимостей в dev режиме
+[profile.dev.package."*"]
+opt-level = 3
+
+# Test профиль
+[profile.test]
+opt-level = 2
+
+# Bench профиль
+[profile.bench]
+opt-level = 3
+lto = "thin"

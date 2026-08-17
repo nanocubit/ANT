@@ -1,0 +1,48 @@
+# Пример манифеста WASM навыка для ANT OS
+
+name = "git-skill"
+version = "1.0.0"
+description = "Git операции для ANT OS"
+author = "ANT Team"
+
+# Разрешения
+[permissions]
+# Доступ к файловой системе
+filesystem = { allowed_paths = ["./workspace", "./.git"], mode = "readwrite" }
+
+# Доступ к сети (false = запретить)
+network = false
+
+# Разрешённые команды для выполнения
+execute = ["git", "cargo", "rustc"]
+
+# Доступные переменные окружения
+env = ["HOME", "PATH", "CARGO_HOME"]
+
+# Ограничения ресурсов
+[resources]
+# Максимум fuel (CPU единицы, ~1M = 1 секунда)
+max_fuel = 2_000_000
+
+# Максимум памяти (MB)
+max_memory_mb = 128
+
+# Таймаут выполнения (секунды)
+timeout_secs = 60
+
+# Максимум stack frames
+max_stack_frames = 200
+
+# Экспортированные функции
+[exports]
+# Основная функция обработки (обязательно)
+process = "main"
+
+# Функция инициализации (опционально)
+init = "init"
+
+# Функция очистки (опционально)
+cleanup = "cleanup"
+
+# Зависимости (опционально)
+# dependencies = ["base64-skill", "json-skill"]
