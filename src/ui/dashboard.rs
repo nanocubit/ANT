@@ -392,7 +392,6 @@ pub async fn run_ui(bus: Arc<EventBus>) -> anyhow::Result<()> {
 
     disable_raw_mode()?;
     execute!(terminal.backend_mut(), LeaveAlternateScreen, DisableMouseCapture)?;
-    terminal.show_cursor()?;
 
     Ok(())
 }
