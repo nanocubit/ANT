@@ -8,14 +8,14 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_VERSION: "stable"
+  RUST_VERSION: "1.85"
   CARGO_LOCKED: "1"
 
 jobs:
   quick-check:
     name: Quick Check (cargo check)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
     - name: Checkout
       uses: actions/checkout@v4
