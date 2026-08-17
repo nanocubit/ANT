@@ -396,8 +396,6 @@ pub async fn run_ui(bus: Arc<EventBus>) -> anyhow::Result<()> {
     Ok(())
 }
 
-}
-
 /// Отрисовка UI
 fn draw_ui(f: &mut Frame, state: &mut DashboardState) {
     let area = f.size();
