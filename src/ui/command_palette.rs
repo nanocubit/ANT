@@ -44,6 +44,18 @@ pub enum CommandAction {
     ShowStatus,
     /// Перезагрузить демона
     RestartDaemon { daemon: String },
+    /// Разделить панель горизонтально (слева-справа)
+    SplitHorizontal { tab: usize },
+    /// Разделить панель вертикально (сверху-снизу)
+    SplitVertical { tab: usize },
+    /// Закрыть текущую панель
+    ClosePane,
+    /// Фокус на следующую панель
+    FocusNextPane,
+    /// Фокус на предыдущую панель
+    FocusPrevPane,
+    /// Уравнять размеры панелей
+    EqualizePanes,
 }
 
 /// Состояние палитры команд
@@ -66,7 +78,7 @@ impl CommandPalette {
             Command {
                 name: "submit".to_string(),
                 description: "Отправить новую задачу (goal)".to_string(),
-                usage: ":submit "Описание задачи" [--priority N]".to_string(),
+                usage: ":submit \"Описание задачи\" [--priority N]".to_string(),
                 action: CommandAction::SubmitGoal { task: String::new() },
                 aliases: vec!["s".to_string(), "new".to_string(), "goal".to_string()],
             },
@@ -139,6 +151,49 @@ impl CommandPalette {
                 usage: ":restart <daemon_name>".to_string(),
                 action: CommandAction::RestartDaemon { daemon: String::new() },
                 aliases: vec![],
+            },
+            // === Split Pane Commands ===
+            Command {
+                name: "split".to_string(),
+                description: "Разделить панель горизонтально (слева-справа)".to_string(),
+                usage: ":split [tab_name]".to_string(),
+                action: CommandAction::SplitHorizontal { tab: 3 }, // Logs по умолчанию
+                aliases: vec!["sp".to_string(), "hsplit".to_string()],
+            },
+            Command {
+                name: "vsplit".to_string(),
+                description: "Разделить панель вертикально (сверху-снизу)".to_string(),
+                usage: ":vsplit [tab_name]".to_string(),
+                action: CommandAction::SplitVertical { tab: 3 }, // Logs по умолчанию
+                aliases: vec!["vsp".to_string()],
+            },
+            Command {
+                name: "close-pane".to_string(),
+                description: "Закрыть текущую панель".to_string(),
+                usage: ":close-pane".to_string(),
+                action: CommandAction::ClosePane,
+                aliases: vec!["cp".to_string()],
+            },
+            Command {
+                name: "next-pane".to_string(),
+                description: "Фокус на следующую панель".to_string(),
+                usage: ":next-pane".to_string(),
+                action: CommandAction::FocusNextPane,
+                aliases: vec!["np".to_string(), "tabn".to_string()],
+            },
+            Command {
+                name: "prev-pane".to_string(),
+                description: "Фокус на предыдущую панель".to_string(),
+                usage: ":prev-pane".to_string(),
+                action: CommandAction::FocusPrevPane,
+                aliases: vec!["pp".to_string(), "tabp".to_string()],
+            },
+            Command {
+                name: "equalize".to_string(),
+                description: "Уравнять размеры панелей".to_string(),
+                usage: ":equalize".to_string(),
+                action: CommandAction::EqualizePanes,
+                aliases: vec!["eq".to_string()],
             },
         ];
 
@@ -350,6 +405,23 @@ impl CommandPalette {
                     daemon: args[0].to_string() 
                 })
             }
+            // === Split Pane Commands ===
+            "split" | "sp" | "hsplit" => {
+                let tab = args.get(0)
+                    .and_then(|s| Tab::all().iter().position(|t| t.titles()[0].to_lowercase().contains(&s.to_lowercase())))
+                    .unwrap_or(3); // Logs по умолчанию
+                Some(CommandAction::SplitHorizontal { tab })
+            }
+            "vsplit" | "vsp" => {
+                let tab = args.get(0)
+                    .and_then(|s| Tab::all().iter().position(|t| t.titles()[0].to_lowercase().contains(&s.to_lowercase())))
+                    .unwrap_or(3); // Logs по умолчанию
+                Some(CommandAction::SplitVertical { tab })
+            }
+            "close-pane" | "cp" => Some(CommandAction::ClosePane),
+            "next-pane" | "np" | "tabn" => Some(CommandAction::FocusNextPane),
+            "prev-pane" | "pp" | "tabp" => Some(CommandAction::FocusPrevPane),
+            "equalize" | "eq" => Some(CommandAction::EqualizePanes),
             _ => None,
         }
     }
@@ -410,7 +482,7 @@ impl CommandPalette {
 
                 let content = Line::from(vec![
                     Span::styled(
-                        format!(":{:<15} ", cmd.name),
+                        format!(":{:<18} ", cmd.name),
                         Style::default().fg(theme.colors.accent).add_modifier(Modifier::BOLD),
                     ),
                     Span::styled(cmd.description.clone(), style),

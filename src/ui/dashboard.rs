@@ -1,8 +1,9 @@
 use crate::bus::{EventBus, SystemEvent};
 use crate::ui::theme::{Theme, ThemeManager, ThemeType};
 use crate::ui::dag_editor::{DagEditorState, DagEditorCommand, draw_dag_editor};
+use crate::ui::command_palette::{CommandPalette, CommandAction};
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event as CEvent, KeyCode, MouseEventKind, MouseButton},
+    event::{self, DisableMouseCapture, EnableMouseCapture, Event as CEvent, KeyCode, KeyModifiers, MouseEventKind, MouseButton},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -64,11 +65,12 @@ pub struct DashboardState {
     pub log_scroll: ListState,
     pub git_status: Option<GitStatusInfo>,
     pub agents_status: Vec<AgentStatusInfo>,
-    pub resource_history: Arc<Mutex<Vec<(u64, f32)>>>, // (RAM, CPU) история
+    pub resource_history: Arc<Mutex<Vec<(u64, f32)>>>,
     pub show_memory_panel: bool,
     pub memory_search_mode: bool,
     pub theme_manager: ThemeManager,
     pub dag_editor_state: DagEditorState,
+    pub command_palette: CommandPalette,
 }
 
 #[derive(Clone)]
@@ -107,7 +109,7 @@ impl DashboardState {
             logs: Arc::new(Mutex::new(Vec::new())),
             goals: Arc::new(Mutex::new(Vec::new())),
             input_text: String::new(),
-            chat_history: vec!["🦀 ANT OS v8.0: Система готова. Введите команду.".to_string()],
+            chat_history: vec!["🦀 ANT OS v0.9.0: Система готова. Введите команду.".to_string()],
             memory_stats: None,
             memory_documents: Vec::new(),
             memory_search_results: Vec::new(),
@@ -125,6 +127,7 @@ impl DashboardState {
             memory_search_mode: false,
             theme_manager: ThemeManager::new(),
             dag_editor_state: DagEditorState::new(),
+            command_palette: CommandPalette::new(),
         }
     }
 }
@@ -132,6 +135,123 @@ impl DashboardState {
 impl Default for DashboardState {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+/// Обработка действий команд палитры
+fn handle_command_action(action: CommandAction, bus: &Arc<EventBus>, state: &mut DashboardState) {
+    match action {
+        CommandAction::SubmitGoal { task } => {
+            state.chat_history.push(format!("⚡ Submit: {}", task));
+            bus.emit(SystemEvent::GoalCreated {
+                id: format!("G-{}", chrono::Local::now().format("%H%M%S")),
+                task,
+            });
+        }
+        CommandAction::KillGoal { goal_id } => {
+            state.chat_history.push(format!("🛑 Kill: {}", goal_id));
+            bus.emit(SystemEvent::GoalFailed {
+                id: goal_id,
+                reason: "Killed by user".to_string(),
+            });
+        }
+        CommandAction::RetryTask { task_id } => {
+            state.chat_history.push(format!("🔄 Retry: {}", task_id));
+            if let Some(task) = state.dags.lock().unwrap().get_mut(&task_id) {
+                task[1] = "PENDING".to_string();
+                bus.emit(SystemEvent::TaskDispatched {
+                    task_id: task_id.clone(),
+                    tool: task[0].clone(),
+                    input: task[2].clone(),
+                });
+            }
+        }
+        CommandAction::ShowTaskLogs { task_id } => {
+            state.chat_history.push(format!("📜 Logs for: {}", task_id));
+            state.active_tab = Tab::Logs;
+            state.scroll_offset = 0;
+        }
+        CommandAction::ToggleTheme => {
+            state.theme_manager.toggle();
+            state.chat_history.push(format!("🎨 Theme: {:?}", state.theme_manager.get_theme().theme_type));
+        }
+        CommandAction::ShowHelp => {
+            state.active_tab = Tab::Help;
+        }
+        CommandAction::Quit => {
+            state.chat_history.push("👋 Goodbye!".to_string());
+            bus.emit(SystemEvent::SystemBoot("Shutdown requested".to_string()));
+        }
+        CommandAction::SwitchTab { tab } => {
+            let tabs = Tab::all();
+            if tab < tabs.len() {
+                state.active_tab = tabs[tab];
+                state.chat_history.push(format!("📑 Tab: {:?}", tabs[tab]));
+            }
+        }
+        CommandAction::ClearLogs => {
+            state.logs.lock().unwrap().clear();
+            state.chat_history.push("🗑️ Logs cleared".to_string());
+        }
+        CommandAction::ShowStatus => {
+            let goals = state.goals.lock().unwrap();
+            let active = goals.iter().filter(|g| g.status != "COMPLETED" && g.status != "FAILED").count();
+            let completed = goals.iter().filter(|g| g.status == "COMPLETED").count();
+            let failed = goals.iter().filter(|g| g.status == "FAILED").count();
+            state.chat_history.push(format!(
+                "📊 Status: Active: {}, Completed: {}, Failed: {}",
+                active, completed, failed
+            ));
+        }
+        CommandAction::RestartDaemon { daemon } => {
+            state.chat_history.push(format!("🔄 Restart daemon: {}", daemon));
+            bus.emit(SystemEvent::DaemonStatus {
+                daemon: daemon.clone(),
+                status: "RESTARTING".to_string(),
+            });
+        }
+        CommandAction::SplitHorizontal { tab } => {
+            let tabs = Tab::all();
+            if tab < tabs.len() {
+                if state.split_root.split_focused(crate::ui::dashboard::SplitDirection::Horizontal, tabs[tab]) {
+                    state.chat_history.push(format!("⬅️➡️ Split horizontal: {:?}", tabs[tab]));
+                }
+            }
+        }
+        CommandAction::SplitVertical { tab } => {
+            let tabs = Tab::all();
+            if tab < tabs.len() {
+                if state.split_root.split_focused(crate::ui::dashboard::SplitDirection::Vertical, tabs[tab]) {
+                    state.chat_history.push(format!("⬆️⬇️ Split vertical: {:?}", tabs[tab]));
+                }
+            }
+        }
+        CommandAction::ClosePane => {
+            if state.split_root.close_focused() {
+                state.chat_history.push("❌ Pane closed".to_string());
+            }
+        }
+        CommandAction::FocusNextPane => {
+            state.split_root.focus_next();
+            state.chat_history.push("➡️ Next pane".to_string());
+        }
+        CommandAction::FocusPrevPane => {
+            state.split_root.focus_prev();
+            state.chat_history.push("⬅️ Prev pane".to_string());
+        }
+        CommandAction::EqualizePanes => {
+            fn equalize(node: &mut crate::ui::dashboard::SplitNode) {
+                if let crate::ui::dashboard::SplitNode::Split { children, sizes, .. } = node {
+                    let size = 100 / children.len() as u16;
+                    *sizes = vec![size; children.len()];
+                    for child in children {
+                        equalize(child);
+                    }
+                }
+            }
+            equalize(&mut state.split_root);
+            state.chat_history.push("⚖️ Panes equalized".to_string());
+        }
     }
 }
 
@@ -218,7 +338,6 @@ pub async fn run_ui(bus: Arc<EventBus>) -> anyhow::Result<()> {
             *metrics_state.ram_mb.lock().unwrap() = ram_used;
             *metrics_state.cpu_percent.lock().unwrap() = cpu;
             
-            // Добавляем в историю
             let mut history = metrics_state.resource_history.lock().unwrap();
             history.push((ram_used, cpu));
             if history.len() > 50 {
@@ -234,7 +353,6 @@ pub async fn run_ui(bus: Arc<EventBus>) -> anyhow::Result<()> {
         terminal.draw(|f| draw_ui(f, &mut state))?;
 
         if event::poll(Duration::from_millis(100))? {
-            // Сначала проверяем мышь для DAG редактора
             if let CEvent::Mouse(mouse) = event::read()? {
                 if state.active_tab == Tab::Dashboard && !state.command_palette.visible {
                     match mouse.kind {
@@ -283,24 +401,19 @@ pub async fn run_ui(bus: Arc<EventBus>) -> anyhow::Result<()> {
                     }
                     KeyCode::Char('t') => {
                         if !state.command_palette.visible {
-                            // Переключение темы
                             state.theme_manager.toggle();
                         }
                     }
                     KeyCode::Char('r') => {
                         if !state.command_palette.visible {
-                            // Refresh memory search
                             state.memory_search_mode = true;
                         }
                     }
                     KeyCode::Char('d') if state.input_text.is_empty() && !state.command_palette.visible => {
-                        // DAG editor mode - переключение на Dashboard
                         state.active_tab = Tab::Dashboard;
                     }
                     KeyCode::Delete if state.input_text.is_empty() && !state.command_palette.visible => {
-                        // Удаление выбранного узла в DAG редакторе
                         if let Some(ref node_id) = state.dag_editor_state.selected_node {
-                            // TODO: Реализовать удаление узла
                             state.dag_editor_state.selected_node = None;
                         }
                     }
@@ -335,7 +448,6 @@ pub async fn run_ui(bus: Arc<EventBus>) -> anyhow::Result<()> {
                     }
                     KeyCode::Tab => {
                         if state.command_palette.visible {
-                            // Auto-complete
                             if let Some(cmd) = state.command_palette.selected_command() {
                                 state.command_palette.input = format!(":{} ", cmd.name);
                                 state.command_palette.filter();
@@ -375,7 +487,6 @@ pub async fn run_ui(bus: Arc<EventBus>) -> anyhow::Result<()> {
                 }
             }
             
-            // Mouse scroll handling (outside command palette)
             if let CEvent::Mouse(mouse) = event::read()? {
                 if !state.command_palette.visible {
                     if mouse.kind == MouseEventKind::ScrollDown {
@@ -392,6 +503,7 @@ pub async fn run_ui(bus: Arc<EventBus>) -> anyhow::Result<()> {
 
     disable_raw_mode()?;
     execute!(terminal.backend_mut(), LeaveAlternateScreen, DisableMouseCapture)?;
+    terminal.show_cursor()?;
 
     Ok(())
 }
@@ -409,13 +521,9 @@ fn draw_ui(f: &mut Frame, state: &mut DashboardState) {
         ])
         .split(area);
 
-    // Status bar
     draw_status_bar(f, main_chunks[0], state);
-
-    // Tabs
     draw_tabs(f, main_chunks[1], state.active_tab, state.theme_manager.get_theme());
-
-    // Main content based on active tab
+    
     match state.active_tab {
         Tab::Dashboard => draw_dashboard(f, main_chunks[2], state),
         Tab::Memory => draw_memory(f, main_chunks[2], state),
@@ -425,9 +533,12 @@ fn draw_ui(f: &mut Frame, state: &mut DashboardState) {
         Tab::Git => draw_git(f, main_chunks[2], state),
         Tab::Help => draw_help(f, main_chunks[2], state),
     }
-
-    // Input field
+    
     draw_input(f, main_chunks[3], state);
+    
+    if state.command_palette.visible {
+        state.command_palette.draw(f, area, state.theme_manager.get_theme());
+    }
 }
 
 fn draw_status_bar(f: &mut Frame, area: Rect, state: &DashboardState) {
@@ -436,50 +547,48 @@ fn draw_status_bar(f: &mut Frame, area: Rect, state: &DashboardState) {
     let ram = *state.ram_mb.lock().unwrap();
     let cpu = *state.cpu_percent.lock().unwrap();
     
-    let status_text = format!(
-        " 🦀 ANT OS v8.0 | RAM: {} MB | CPU: {:.1}% | Goals: {} | Theme: {:?} ",
-        ram,
-        cpu,
-        state.goals.lock().unwrap().len(),
-        state.theme_manager.get_theme().theme_type,
-    );
-
-    let status = Paragraph::new(status_text)
-        .style(Style::default().fg(theme.colors.foreground).bg(theme.colors.primary))
-        .block(Block::default()
-            .borders(Borders::ALL)
-            .border_style(theme.border_style()));
-
-    f.render_widget(status, area);
+    let daemons = state.daemons.lock().unwrap();
+    let running = daemons.values().filter(|s| *s == "RUNNING").count();
+    let total = daemons.len();
+    
+    let goals = state.goals.lock().unwrap();
+    let active_goals = goals.iter().filter(|g| g.status != "COMPLETED" && g.status != "FAILED").count();
+    
+    let status = Line::from(vec![
+        Span::styled("🦀 ANT OS v0.9.0", Style::default().fg(theme.colors.accent).add_modifier(Modifier::BOLD)),
+        Span::raw(" | "),
+        Span::styled(format!("💾 RAM: {} MB", ram), Style::default().fg(Color::Blue)),
+        Span::raw(" | "),
+        Span::styled(format!("⚡ CPU: {:.1}%", cpu), Style::default().fg(Color::Green)),
+        Span::raw(" | "),
+        Span::styled(format!("🛡️ Daemons: {}/{}", running, total), Style::default().fg(Color::Cyan)),
+        Span::raw(" | "),
+        Span::styled(format!("🎯 Goals: {}", active_goals), Style::default().fg(Color::Yellow)),
+    ]);
+    
+    let bar = Paragraph::new(status)
+        .block(Block::default().borders(Borders::ALL).border_style(theme.border_style()));
+    
+    f.render_widget(bar, area);
 }
 
-fn draw_tabs(f: &mut Frame, area: Rect, active_tab: Tab, theme: &Theme) {
-    let titles: Vec<Line> = Tab::titles()
-        .iter()
-        .map(|t| Line::from(*t))
-        .collect();
-
+fn draw_tabs(f: &mut Frame, area: Rect, active: Tab, theme: &Theme) {
+    let titles = Tab::titles();
     let tabs = Tabs::new(titles)
-        .block(Block::default()
-            .borders(Borders::ALL)
-            .title("Navigation")
-            .border_style(theme.border_style()))
-        .select(Tab::all().iter().position(|t| t == &active_tab).unwrap_or(0))
-        .style(Style::default().fg(theme.colors.tab_inactive))
-        .highlight_style(Style::default()
-            .fg(theme.colors.tab_active)
-            .add_modifier(Modifier::BOLD));
-
+        .select(active as usize)
+        .block(Block::default().borders(Borders::ALL).border_style(theme.border_style()))
+        .style(Style::default().fg(theme.colors.foreground))
+        .highlight_style(Style::default().fg(theme.colors.accent).add_modifier(Modifier::BOLD))
+        .divider(Span::raw(" | "));
+    
     f.render_widget(tabs, area);
 }
 
 fn draw_dashboard(f: &mut Frame, area: Rect, state: &mut DashboardState) {
     let theme = state.theme_manager.get_theme();
     
-    // Получаем данные о задачах
     let dags_guard = state.dags.lock().unwrap();
     
-    // Преобразуем данные в TaskNode для редактора
     let mut tasks = HashMap::new();
     let mut statuses = HashMap::new();
     
@@ -492,7 +601,7 @@ fn draw_dashboard(f: &mut Frame, area: Rect, state: &mut DashboardState) {
             id: id.clone(),
             tool,
             input,
-            depends_on: vec![], // TODO: Добавить зависимости
+            depends_on: vec![],
         };
         
         let task_status = match status_str.as_str() {
@@ -508,8 +617,36 @@ fn draw_dashboard(f: &mut Frame, area: Rect, state: &mut DashboardState) {
     
     drop(dags_guard);
     
-    // Рисуем DAG редактор
-    draw_dag_editor(f, area, &tasks, &statuses, &mut state.dag_editor_state, theme);
+    let chunks = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(60), Constraint::Percentage(40)])
+        .split(area);
+
+    draw_dag_editor(f, chunks[0], &tasks, &statuses, &mut state.dag_editor_state, theme);
+
+    let right_chunks = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+        .split(chunks[1]);
+
+    let ram = *state.ram_mb.lock().unwrap();
+    let cpu = *state.cpu_percent.lock().unwrap();
+    
+    let ram_gauge = Gauge::default()
+        .gauge_style(Style::default().fg(Color::Blue))
+        .label(format!("{} MB", ram))
+        .ratio(ram as f64 / 16384.0)
+        .block(Block::default().borders(Borders::ALL).title("💾 RAM Usage"));
+
+    f.render_widget(ram_gauge, right_chunks[0]);
+
+    let cpu_gauge = Gauge::default()
+        .gauge_style(Style::default().fg(Color::Green))
+        .label(format!("{:.1}%", cpu))
+        .ratio(cpu as f64 / 100.0)
+        .block(Block::default().borders(Borders::ALL).title("⚡ CPU Usage"));
+
+    f.render_widget(cpu_gauge, right_chunks[1]);
 }
 
 fn draw_daemons(f: &mut Frame, area: Rect, state: &DashboardState, theme: &Theme) {
@@ -538,89 +675,62 @@ fn draw_daemons(f: &mut Frame, area: Rect, state: &DashboardState, theme: &Theme
     f.render_widget(daemons_list, area);
 }
 
-    // Right side - Resource graphs
-    let right_chunks = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
-        .split(chunks[1]);
-
-    // RAM Gauge
-    let ram = *state.ram_mb.lock().unwrap();
-    let cpu = *state.cpu_percent.lock().unwrap();
-    
-    let ram_gauge = Gauge::default()
-        .gauge_style(Style::default().fg(Color::Blue))
-        .label(format!("{} MB", ram))
-        .ratio(ram as f64 / 16384.0) // 16GB max
-        .block(Block::default().borders(Borders::ALL).title("💾 RAM Usage"));
-
-    f.render_widget(ram_gauge, right_chunks[0]);
-
-    // CPU Gauge
-    let cpu_gauge = Gauge::default()
-        .gauge_style(Style::default().fg(Color::Green))
-        .label(format!("{:.1}%", cpu))
-        .ratio(cpu as f64 / 100.0)
-        .block(Block::default().borders(Borders::ALL).title("⚡ CPU Usage"));
-
-    f.render_widget(cpu_gauge, right_chunks[1]);
-}
-
 fn draw_memory(f: &mut Frame, area: Rect, state: &mut DashboardState) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([Constraint::Length(3), Constraint::Min(0)])
         .split(area);
 
-    // Search bar
     let search_text = if state.memory_search_mode {
         format!("🔍 Search: {}_", state.memory_search_query)
     } else {
         "🔍 Press 'r' to search".to_string()
     };
-
+    
     let search = Paragraph::new(search_text)
         .style(Style::default().fg(Color::Yellow))
         .block(Block::default().borders(Borders::ALL).title("Memory Search"));
-
+    
     f.render_widget(search, chunks[0]);
-
-    // Memory documents (placeholder)
-    let memory_items = vec![ListItem::new("Memory module not loaded - enable in Cargo.toml")];
-
-    let memory_list = List::new(memory_items)
-        .block(Block::default().borders(Borders::ALL).title("🧠 Memory"))
-        .highlight_style(Style::default().bg(Color::DarkGray));
-
-    f.render_stateful_widget(memory_list, chunks[1], &mut state.memory_scroll);
+    
+    let items: Vec<ListItem> = state
+        .logs
+        .lock()
+        .unwrap()
+        .iter()
+        .skip(state.scroll_offset)
+        .map(|l| ListItem::new(l.clone()))
+        .collect();
+    
+    let list = List::new(items)
+        .block(Block::default().borders(Borders::ALL).title("Memory/Logs"));
+    
+    f.render_widget(list, chunks[1]);
 }
 
-fn draw_graph(f: &mut Frame, area: Rect, state: &DashboardState) {
-    let chunks = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
-        .split(area);
-
+fn draw_graph(f: &mut Frame, area: Rect, state: &mut DashboardState) {
+    let theme = state.theme_manager.get_theme();
     let history = state.resource_history.lock().unwrap();
     
-    // RAM Sparkline
     let ram_data: Vec<u64> = history.iter().map(|(r, _)| *r).collect();
-    let ram_data_rev: Vec<u64> = ram_data.iter().rev().copied().collect();
+    let cpu_data: Vec<f32> = history.iter().map(|(_, c)| *c).collect();
+    
     let ram_spark = Sparkline::default()
-        .block(Block::default().borders(Borders::ALL).title("💾 RAM History"))
+        .data(&ram_data)
         .style(Style::default().fg(Color::Blue))
-        .data(&ram_data_rev);
-
-    f.render_widget(ram_spark, chunks[0]);
-
-    // CPU Sparkline
-    let cpu_data: Vec<u64> = history.iter().map(|(_, c)| (*c * 10.0) as u64).collect();
-    let cpu_data_rev: Vec<u64> = cpu_data.iter().rev().copied().collect();
+        .block(Block::default().borders(Borders::ALL).title("RAM History (MB)").border_style(theme.border_style()));
+    
     let cpu_spark = Sparkline::default()
-        .block(Block::default().borders(Borders::ALL).title("⚡ CPU History"))
+        .data(&cpu_data)
         .style(Style::default().fg(Color::Green))
-        .data(&cpu_data_rev);
-
+        .block(Block::default().borders(Borders::ALL).title("CPU History (%)").border_style(theme.border_style()));
+    
+    let chunks = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+        .split(area);
+    
+    f.render_widget(ram_spark, chunks[0]);
     f.render_widget(cpu_spark, chunks[1]);
 }
 
@@ -630,110 +740,101 @@ fn draw_logs(f: &mut Frame, area: Rect, state: &mut DashboardState) {
         .lock()
         .unwrap()
         .iter()
+        .rev()
         .skip(state.scroll_offset)
         .map(|l| ListItem::new(l.clone()))
         .collect();
-
-    let logs_list = List::new(logs)
-        .block(Block::default().borders(Borders::ALL).title(format!(
-            "📜 System Logs (scroll: ↑/↓, offset: {})",
-            state.scroll_offset
-        )));
-
-    f.render_widget(logs_list, area);
+    
+    let list = List::new(logs)
+        .block(Block::default().borders(Borders::ALL).title("📜 System Logs"));
+    
+    f.render_widget(list, area);
 }
 
-fn draw_agents(f: &mut Frame, area: Rect, state: &DashboardState) {
-    let agent_items: Vec<ListItem> = state
+fn draw_agents(f: &mut Frame, area: Rect, state: &mut DashboardState) {
+    let theme = state.theme_manager.get_theme();
+    
+    let items: Vec<ListItem> = state
         .agents_status
         .iter()
-        .map(|agent| {
-            let color = if agent.available { Color::Green } else { Color::Red };
-            let version = agent.version.as_deref().unwrap_or("unknown");
-            ListItem::new(Line::from(vec![
-                Span::styled(
-                    format!("{:<15} ", agent.name),
-                    Style::default().fg(color).add_modifier(Modifier::BOLD),
-                ),
-                Span::raw(format!("v{}", version)),
-            ]))
+        .map(|a| {
+            let status = if a.available { "✅" } else { "❌" };
+            let version = a.version.as_deref().unwrap_or("unknown");
+            ListItem::new(format!("{} {} ({})", status, a.name, version))
         })
         .collect();
-
-    let agents_list = List::new(agent_items)
-        .block(Block::default().borders(Borders::ALL).title("🤖 AI Agents Status"));
-
-    f.render_widget(agents_list, area);
+    
+    let list = List::new(items)
+        .block(Block::default().borders(Borders::ALL).title("🤖 Agents").border_style(theme.border_style()));
+    
+    f.render_widget(list, area);
 }
 
-fn draw_git(f: &mut Frame, area: Rect, state: &DashboardState) {
-    let git_info = if let Some(status) = &state.git_status {
-        let status_color = if status.is_clean { Color::Green } else { Color::Yellow };
-        vec![
-            Line::from(""),
-            Line::from(Span::styled(
-                format!("Branch: {}", status.branch),
-                Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD),
-            )),
-            Line::from(Span::styled(
-                format!("Changes: {} ({}clean)", status.changes, if status.is_clean { "" } else { "not " }),
-                Style::default().fg(status_color),
-            )),
-        ]
+fn draw_git(f: &mut Frame, area: Rect, state: &mut DashboardState) {
+    let theme = state.theme_manager.get_theme();
+    
+    if let Some(git) = &state.git_status {
+        let text = vec![
+            Line::from(vec![Span::styled("Branch: ", Style::default().fg(theme.colors.accent)), Span::raw(&git.branch)]),
+            Line::from(vec![Span::styled("Changes: ", Style::default().fg(theme.colors.accent)), Span::raw(git.changes.to_string())]),
+            Line::from(vec![Span::styled("Status: ", Style::default().fg(theme.colors.accent)), Span::raw(if git.is_clean { "Clean" } else { "Dirty" })]),
+        ];
+        
+        let para = Paragraph::new(text)
+            .block(Block::default().borders(Borders::ALL).title("🔗 Git Status").border_style(theme.border_style()));
+        
+        f.render_widget(para, area);
     } else {
-        vec![
-            Line::from(""),
-            Line::from("No Git repository initialized"),
-            Line::from(""),
-            Line::from("Use: git clone <url> or git init"),
-        ]
-    };
-
-    let git_paragraph = Paragraph::new(git_info)
-        .block(Block::default().borders(Borders::ALL).title("🔗 Git Status"))
-        .wrap(Wrap { trim: true });
-
-    f.render_widget(git_paragraph, area);
+        let para = Paragraph::new("Git not available")
+            .block(Block::default().borders(Borders::ALL).title("🔗 Git Status").border_style(theme.border_style()));
+        
+        f.render_widget(para, area);
+    }
 }
 
 fn draw_help(f: &mut Frame, area: Rect, state: &DashboardState) {
     let theme = state.theme_manager.get_theme();
     
-    let help_text = vec![
+    let help = Paragraph::new(vec![
+        Line::from(vec![Span::styled("ANT OS v0.9.0 - Help", Style::default().fg(theme.colors.accent).add_modifier(Modifier::BOLD))]),
         Line::from(""),
-        Line::from(Span::styled("📋 Navigation:", Style::default().add_modifier(Modifier::BOLD))),
+        Line::from(vec![Span::styled("Navigation:", Style::default().fg(theme.colors.accent))]),
+        Line::from("  Tab / Shift+Tab  - Switch tabs"),
+        Line::from("  :                - Command palette"),
+        Line::from("  ↑/↓              - Scroll / Navigate palette"),
+        Line::from("  Enter            - Execute command / Send input"),
+        Line::from("  Esc              - Close palette / Exit search"),
         Line::from(""),
-        Line::from("  [Tab]         - Next tab"),
-        Line::from("  [Shift+Tab]   - Previous tab"),
-        Line::from("  [Esc]/[q]     - Exit"),
-        Line::from("  [t]           - Toggle theme (dark/light)"),
+        Line::from(vec![Span::styled("Commands:", Style::default().fg(theme.colors.accent))]),
+        Line::from("  :submit \"task\"   - Submit new goal"),
+        Line::from("  :kill <id>       - Kill goal/task"),
+        Line::from("  :retry <id>      - Retry failed task"),
+        Line::from("  :logs <id>       - Show task logs"),
+        Line::from("  :split [tab]     - Horizontal split"),
+        Line::from("  :vsplit [tab]    - Vertical split"),
+        Line::from("  :close-pane      - Close current pane"),
+        Line::from("  :next-pane       - Focus next pane"),
+        Line::from("  :theme           - Toggle theme"),
+        Line::from("  :help            - This help"),
+        Line::from("  :quit            - Exit ANT OS"),
         Line::from(""),
-        Line::from(Span::styled("🎨 Theme:", Style::default().add_modifier(Modifier::BOLD))),
+        Line::from(vec![Span::styled("Shortcuts:", Style::default().fg(theme.colors.accent))]),
+        Line::from("  m                - Toggle memory panel"),
+        Line::from("  r                - Memory search mode"),
+        Line::from("  t                - Toggle theme"),
+        Line::from("  d                - Dashboard tab"),
         Line::from(""),
-        Line::from(format!("  Current: {:?}", state.theme_manager.get_theme().theme_type)),
-        Line::from(""),
-        Line::from(Span::styled("🔍 Search:", Style::default().add_modifier(Modifier::BOLD))),
-        Line::from(""),
-        Line::from("  [r]           - Start memory search"),
-        Line::from("  [m]           - Toggle memory panel"),
-        Line::from("  [↑]/[↓]       - Scroll in search"),
-        Line::from("  [Esc]         - Exit search mode"),
-        Line::from(""),
-        Line::from(Span::styled("📝 Commands:", Style::default().add_modifier(Modifier::BOLD))),
-        Line::from(""),
-        Line::from("  • scrape <url>           - Web scraping"),
-        Line::from("  • git <command>          - Git operations"),
-        Line::from("  • goose <task>           - Run Goose agent"),
-        Line::from("  • memory:search <query>  - Search memory"),
-        Line::from("  • run <cmd>              - Execute in sandbox"),
-    ];
-
-    let help = Paragraph::new(help_text)
-        .block(Block::default()
-            .borders(Borders::ALL)
-            .title("❓ Help")
-            .border_style(theme.border_style()))
-        .wrap(Wrap { trim: true });
+        Line::from(vec![Span::styled("Tabs:", Style::default().fg(theme.colors.accent))]),
+        Line::from("  1 📊 Dashboard   - DAG editor + resource graphs"),
+        Line::from("  2 🧠 Memory      - Search & view memory"),
+        Line::from("  3 📈 Graph       - Resource sparklines"),
+        Line::from("  4 📜 Logs        - System logs"),
+        Line::from("  5 🤖 Agents      - External agent status"),
+        Line::from("  6 🔗 Git         - Git status"),
+        Line::from("  7 ❓ Help        - This help"),
+    ])
+    .block(Block::default().borders(Borders::ALL).title("❓ Help").border_style(theme.border_style()))
+    .wrap(Wrap { trim: true });
 
     f.render_widget(help, area);
 }
@@ -763,4 +864,3 @@ fn draw_input(f: &mut Frame, area: Rect, state: &DashboardState) {
         f.set_cursor(area.x + input_width, area.y + input_height);
     }
 }
-
